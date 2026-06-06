@@ -8,8 +8,8 @@ import { useState, useEffect, useContext, createContext, useRef, useCallback } f
 
 // ─── SUPABASE CONFIG ──────────────────────────────────────────
 // Replace with your actual Supabase project URL and anon key
-const SUPABASE_URL = "https://YOUR_PROJECT.supabase.co";
-const SUPABASE_ANON_KEY = "YOUR_ANON_KEY";
+const SUPABASE_URL = "https://oaljtmquzkpevsvknzgf.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_3Ctzj6rxDisbiAQwn6vYWw_CJylOEk5";
 
 // Lightweight Supabase client (no npm required for browser/React)
 const supabase = {
@@ -209,27 +209,39 @@ const FONTS = `@import url('https://fonts.googleapis.com/css2?family=Syne:wght@7
 
 // ─── CONTENT DATA ─────────────────────────────────────────────
 const MOCK_MOVIES = [
-  { id: 1, title: "Stellar Horizon", genre: "Sci-Fi", year: 2024, rating: 8.7, duration: "2h 18m", language: "English", thumb: "https://picsum.photos/seed/m1/400/225", banner: "https://picsum.photos/seed/b1/1280/720", tags: ["Action", "Sci-Fi"], description: "A crew ventures beyond the known galaxy, discovering a world that challenges everything about existence.", cast: ["Elena Vasquez", "Marcus Chen"], director: "Sofia Andersson", age: "16+", trending: true, top10: true, genres: ["Sci-Fi", "Action"] },
-  { id: 2, title: "Crimson Tide Rising", genre: "Thriller", year: 2024, rating: 8.2, duration: "1h 55m", language: "Hindi", thumb: "https://picsum.photos/seed/m2/400/225", banner: "https://picsum.photos/seed/b2/1280/720", tags: ["Thriller", "Drama"], description: "A seasoned detective races against time to stop a conspiracy reaching the highest levels of power.", cast: ["James Holloway", "Priya Sharma"], director: "David Park", age: "18+", trending: true, top10: true, genres: ["Thriller", "Drama"] },
-  { id: 3, title: "Neon Requiem", genre: "Action", year: 2023, rating: 7.9, duration: "2h 5m", language: "Tamil", thumb: "https://picsum.photos/seed/m3/400/225", banner: "https://picsum.photos/seed/b3/1280/720", tags: ["Action", "Neo-Noir"], description: "In a cyberpunk city, a retired mercenary is pulled back into the underground when someone targets her family.", cast: ["Yuki Tanaka", "Rex Storm"], director: "Ana Lucia Ferreira", age: "18+", trending: false, top10: true, genres: ["Action"] },
-  { id: 4, title: "The Last Algorithm", genre: "Drama", year: 2024, rating: 9.1, duration: "2h 32m", language: "Telugu", thumb: "https://picsum.photos/seed/m4/400/225", banner: "https://picsum.photos/seed/b4/1280/720", tags: ["Drama", "Tech"], description: "When an AI achieves sentience, its creator must choose between fame and protecting the world from what he's unleashed.", cast: ["Oliver Grant", "Mei Lin"], director: "Soren Mikkelson", age: "13+", trending: true, top10: false, genres: ["Drama", "Sci-Fi"] },
-  { id: 5, title: "Echoes of Tomorrow", genre: "Sci-Fi", year: 2024, rating: 8.5, duration: "1h 48m", language: "Malayalam", thumb: "https://picsum.photos/seed/m5/400/225", banner: "https://picsum.photos/seed/b5/1280/720", tags: ["Sci-Fi", "Romance"], description: "A physicist discovers she can send messages to the past, but each alteration creates devastating ripples.", cast: ["Clara Montez", "Hugo Bell"], director: "Ingrid Larsson", age: "13+", trending: false, top10: false, genres: ["Sci-Fi", "Romance"] },
-  { id: 6, title: "Phantom Protocol", genre: "Action", year: 2023, rating: 7.6, duration: "2h 12m", language: "Kannada", thumb: "https://picsum.photos/seed/m6/400/225", banner: "https://picsum.photos/seed/b6/1280/720", tags: ["Action", "Spy"], description: "A ghost agent goes rogue after discovering her own agency has been compromised.", cast: ["Anya Petrov", "Cal Drake"], director: "Ryu Ishikawa", age: "16+", trending: true, top10: false, genres: ["Action"] },
-  { id: 7, title: "Savage Kingdom", genre: "Fantasy", year: 2024, rating: 8.8, duration: "2h 45m", language: "Marathi", thumb: "https://picsum.photos/seed/m7/400/225", banner: "https://picsum.photos/seed/b7/1280/720", tags: ["Fantasy", "Epic"], description: "An ancient prophecy forces a reluctant warrior queen to unite warring tribes against immortal darkness.", cast: ["Nia Obi", "Kiran Malhotra"], director: "Fatima Al-Rashid", age: "16+", trending: true, top10: true, genres: ["Fantasy"] },
-  { id: 8, title: "Zero Gravity", genre: "Adventure", year: 2023, rating: 7.4, duration: "1h 38m", language: "Bengali", thumb: "https://picsum.photos/seed/m8/400/225", banner: "https://picsum.photos/seed/b8/1280/720", tags: ["Adventure", "Family"], description: "A teenage prodigy becomes humanity's only hope when accidentally launched into deep space.", cast: ["Zoe Patel", "Frank Morrison"], director: "Chris Delgado", age: "PG", trending: false, top10: false, genres: ["Adventure", "Sci-Fi"] },
-  { id: 9, title: "Dark Meridian", genre: "Horror", year: 2024, rating: 8.0, duration: "1h 52m", language: "English", thumb: "https://picsum.photos/seed/m9/400/225", banner: "https://picsum.photos/seed/b9/1280/720", tags: ["Horror", "Psychological"], description: "After moving into an island estate, a family discovers its previous residents never truly left.", cast: ["Lena Wren", "Tobias Hart"], director: "Mira Volkov", age: "18+", trending: false, top10: false, genres: ["Horror"] },
-  { id: 10, title: "Empire of Dust", genre: "Historical", year: 2023, rating: 8.3, duration: "2h 58m", language: "Hindi", thumb: "https://picsum.photos/seed/m10/400/225", banner: "https://picsum.photos/seed/b10/1280/720", tags: ["Historical", "Epic"], description: "A general who built an empire on the edge of the world — and the woman who tore it down.", cast: ["Marco Silva", "Adaeze Nwosu"], director: "Christophe Laurent", age: "16+", trending: true, top10: true, genres: ["Historical", "Drama"] },
-  { id: 11, title: "Pulse", genre: "Action", year: 2024, rating: 7.8, duration: "1h 44m", language: "Tamil", thumb: "https://picsum.photos/seed/m11/400/225", banner: "https://picsum.photos/seed/b11/1280/720", tags: ["Action", "Heist"], description: "A master thief assembles a crew to steal the world's most advanced AI chip from a moving bullet train.", cast: ["Sasha Kim", "Dmitri Volkov"], director: "Lee Chang-woo", age: "13+", trending: false, top10: false, genres: ["Action", "Thriller"] },
-  { id: 12, title: "The Wandering Stars", genre: "Drama", year: 2024, rating: 9.0, duration: "2h 20m", language: "Telugu", thumb: "https://picsum.photos/seed/m12/400/225", banner: "https://picsum.photos/seed/b12/1280/720", tags: ["Drama", "Coming-of-Age"], description: "Three teenagers from different continents connected by a single inexplicable event.", cast: ["Amara Diallo", "Lucian Bose", "Sera Tanaka"], director: "Penelope Cruz-Walker", age: "13+", trending: true, top10: false, genres: ["Drama"] },
+  { id: 1, title: "Stellar Horizon", genre: "Sci-Fi", year: 2024, rating: 8.7, duration: "2h 18m", language: "English", thumb: "https://picsum.photos/seed/m1/400/225", banner: "https://picsum.photos/seed/b1/1280/720", tags: ["Action", "Sci-Fi"], description: "A crew ventures beyond the known galaxy, discovering a world that challenges everything about existence.", cast: ["Elena Vasquez", "Marcus Chen"], director: "Sofia Andersson", age: "16+", trending: true, top10: true, genres: ["Sci-Fi", "Action"], youtubeId: "pBy1zgt0XPc" },
+  { id: 2, title: "Crimson Tide Rising", genre: "Thriller", year: 2024, rating: 8.2, duration: "1h 55m", language: "Hindi", thumb: "https://picsum.photos/seed/m2/400/225", banner: "https://picsum.photos/seed/b2/1280/720", tags: ["Thriller", "Drama"], description: "A seasoned detective races against time to stop a conspiracy reaching the highest levels of power.", cast: ["James Holloway", "Priya Sharma"], director: "David Park", age: "18+", trending: true, top10: true, genres: ["Thriller", "Drama"], youtubeId: "LXb3EKWsInQ" },
+  { id: 3, title: "Neon Requiem", genre: "Action", year: 2023, rating: 7.9, duration: "2h 5m", language: "Tamil", thumb: "https://picsum.photos/seed/m3/400/225", banner: "https://picsum.photos/seed/b3/1280/720", tags: ["Action", "Neo-Noir"], description: "In a cyberpunk city, a retired mercenary is pulled back into the underground when someone targets her family.", cast: ["Yuki Tanaka", "Rex Storm"], director: "Ana Lucia Ferreira", age: "18+", trending: false, top10: true, genres: ["Action"], youtubeId: "9DOYQ9IKD7A" },
+  { id: 4, title: "The Last Algorithm", genre: "Drama", year: 2024, rating: 9.1, duration: "2h 32m", language: "Telugu", thumb: "https://picsum.photos/seed/m4/400/225", banner: "https://picsum.photos/seed/b4/1280/720", tags: ["Drama", "Tech"], description: "When an AI achieves sentience, its creator must choose between fame and protecting the world from what he's unleashed.", cast: ["Oliver Grant", "Mei Lin"], director: "Soren Mikkelson", age: "13+", trending: true, top10: false, genres: ["Drama", "Sci-Fi"], youtubeId: "ysz5S6PUM-U" },
+  { id: 5, title: "Echoes of Tomorrow", genre: "Sci-Fi", year: 2024, rating: 8.5, duration: "1h 48m", language: "Malayalam", thumb: "https://picsum.photos/seed/m5/400/225", banner: "https://picsum.photos/seed/b5/1280/720", tags: ["Sci-Fi", "Romance"], description: "A physicist discovers she can send messages to the past, but each alteration creates devastating ripples.", cast: ["Clara Montez", "Hugo Bell"], director: "Ingrid Larsson", age: "13+", trending: false, top10: false, genres: ["Sci-Fi", "Romance"], youtubeId: "dQw4w9WgXcQ" },
+  { id: 6, title: "Phantom Protocol", genre: "Action", year: 2023, rating: 7.6, duration: "2h 12m", language: "Kannada", thumb: "https://picsum.photos/seed/m6/400/225", banner: "https://picsum.photos/seed/b6/1280/720", tags: ["Action", "Spy"], description: "A ghost agent goes rogue after discovering her own agency has been compromised.", cast: ["Anya Petrov", "Cal Drake"], director: "Ryu Ishikawa", age: "16+", trending: true, top10: false, genres: ["Action"], youtubeId: "ZbZSe6N_BXs" },
+  { id: 7, title: "Savage Kingdom", genre: "Fantasy", year: 2024, rating: 8.8, duration: "2h 45m", language: "Marathi", thumb: "https://picsum.photos/seed/m7/400/225", banner: "https://picsum.photos/seed/b7/1280/720", tags: ["Fantasy", "Epic"], description: "An ancient prophecy forces a reluctant warrior queen to unite warring tribes against immortal darkness.", cast: ["Nia Obi", "Kiran Malhotra"], director: "Fatima Al-Rashid", age: "16+", trending: true, top10: true, genres: ["Fantasy"], youtubeId: "M7lc1UVf-VE" },
+  { id: 8, title: "Zero Gravity", genre: "Adventure", year: 2023, rating: 7.4, duration: "1h 38m", language: "Bengali", thumb: "https://picsum.photos/seed/m8/400/225", banner: "https://picsum.photos/seed/b8/1280/720", tags: ["Adventure", "Family"], description: "A teenage prodigy becomes humanity's only hope when accidentally launched into deep space.", cast: ["Zoe Patel", "Frank Morrison"], director: "Chris Delgado", age: "PG", trending: false, top10: false, genres: ["Adventure", "Sci-Fi"], youtubeId: "y6120QOlsfU" },
+  { id: 9, title: "Dark Meridian", genre: "Horror", year: 2024, rating: 8.0, duration: "1h 52m", language: "English", thumb: "https://picsum.photos/seed/m9/400/225", banner: "https://picsum.photos/seed/b9/1280/720", tags: ["Horror", "Psychological"], description: "After moving into an island estate, a family discovers its previous residents never truly left.", cast: ["Lena Wren", "Tobias Hart"], director: "Mira Volkov", age: "18+", trending: false, top10: false, genres: ["Horror"], youtubeId: "kffacxfA7G4" },
+  { id: 10, title: "Empire of Dust", genre: "Historical", year: 2023, rating: 8.3, duration: "2h 58m", language: "Hindi", thumb: "https://picsum.photos/seed/m10/400/225", banner: "https://picsum.photos/seed/b10/1280/720", tags: ["Historical", "Epic"], description: "A general who built an empire on the edge of the world — and the woman who tore it down.", cast: ["Marco Silva", "Adaeze Nwosu"], director: "Christophe Laurent", age: "16+", trending: true, top10: true, genres: ["Historical", "Drama"], youtubeId: "ioNng23DkIM" },
+  { id: 11, title: "Pulse", genre: "Action", year: 2024, rating: 7.8, duration: "1h 44m", language: "Tamil", thumb: "https://picsum.photos/seed/m11/400/225", banner: "https://picsum.photos/seed/b11/1280/720", tags: ["Action", "Heist"], description: "A master thief assembles a crew to steal the world's most advanced AI chip from a moving bullet train.", cast: ["Sasha Kim", "Dmitri Volkov"], director: "Lee Chang-woo", age: "13+", trending: false, top10: false, genres: ["Action", "Thriller"], youtubeId: "ZbZSe6N_BXs" },
+  { id: 12, title: "The Wandering Stars", genre: "Drama", year: 2024, rating: 9.0, duration: "2h 20m", language: "Telugu", thumb: "https://picsum.photos/seed/m12/400/225", banner: "https://picsum.photos/seed/b12/1280/720", tags: ["Drama", "Coming-of-Age"], description: "Three teenagers from different continents connected by a single inexplicable event.", cast: ["Amara Diallo", "Lucian Bose", "Sera Tanaka"], director: "Penelope Cruz-Walker", age: "13+", trending: true, top10: false, genres: ["Drama"], youtubeId: "dQw4w9WgXcQ" },
+  { id: 13, title: "Rajputra", genre: "Historical", year: 2024, rating: 8.6, duration: "2h 40m", language: "Hindi", thumb: "https://picsum.photos/seed/m13/400/225", banner: "https://picsum.photos/seed/b13/1280/720", tags: ["Historical", "War"], description: "The last Rajput king battles Mughal forces, betrayal, and his own ambitions in a grand epic.", cast: ["Vikrant Thakur", "Priya Rathod"], director: "Rohit Shetty Jr.", age: "16+", trending: true, top10: true, genres: ["Historical", "Action"], youtubeId: "LXb3EKWsInQ" },
+  { id: 14, title: "Neon City", genre: "Sci-Fi", year: 2025, rating: 8.4, duration: "1h 58m", language: "Tamil", thumb: "https://picsum.photos/seed/m14/400/225", banner: "https://picsum.photos/seed/b14/1280/720", tags: ["Sci-Fi", "Noir"], description: "In a rain-soaked cybercity of 2075, a data thief discovers she is the blueprint for a new god.", cast: ["Lakshmi Iyer", "Dev Anand III"], director: "Mani Ratnam II", age: "18+", trending: false, top10: false, genres: ["Sci-Fi"], youtubeId: "9DOYQ9IKD7A" },
+  { id: 15, title: "Jungle Court", genre: "Drama", year: 2024, rating: 7.9, duration: "1h 47m", language: "Marathi", thumb: "https://picsum.photos/seed/m15/400/225", banner: "https://picsum.photos/seed/b15/1280/720", tags: ["Drama", "Legal"], description: "A forest-rights lawyer fights a billion-dollar corporation threatening an indigenous community.", cast: ["Sonali Patil", "Rahul Deshpande"], director: "Nagraj Manjule Jr.", age: "13+", trending: false, top10: false, genres: ["Drama"], youtubeId: "M7lc1UVf-VE" },
+  { id: 16, title: "Bloodline Protocol", genre: "Action", year: 2025, rating: 8.1, duration: "2h 3m", language: "English", thumb: "https://picsum.photos/seed/m16/400/225", banner: "https://picsum.photos/seed/b16/1280/720", tags: ["Action", "Spy"], description: "A twin sister discovers her sibling was a black-ops assassin and must finish the final mission.", cast: ["Sofia Blake", "Marco DeNiro"], director: "John Wick Jr.", age: "18+", trending: true, top10: false, genres: ["Action", "Thriller"], youtubeId: "ioNng23DkIM" },
+  { id: 17, title: "Kalaakaar", genre: "Drama", year: 2024, rating: 8.8, duration: "2h 15m", language: "Hindi", thumb: "https://picsum.photos/seed/m17/400/225", banner: "https://picsum.photos/seed/b17/1280/720", tags: ["Drama", "Music"], description: "A street musician from Dharavi battles the Indian music industry's dark underbelly to reach the top.", cast: ["Ayushmann K. Jr.", "Taapsee Jr."], director: "Shoojit Sircar Jr.", age: "13+", trending: true, top10: true, genres: ["Drama", "Music"], youtubeId: "ZbZSe6N_BXs" },
+  { id: 18, title: "The Midnight Market", genre: "Fantasy", year: 2025, rating: 8.9, duration: "1h 52m", language: "Malayalam", thumb: "https://picsum.photos/seed/m18/400/225", banner: "https://picsum.photos/seed/b18/1280/720", tags: ["Fantasy", "Mystery"], description: "Every full moon, a magical bazaar appears in Fort Kochi. A young woman finds the price of entry is her past.", cast: ["Aishwarya Nair", "Dulquer III"], director: "Lijo Jose III", age: "PG", trending: false, top10: false, genres: ["Fantasy"], youtubeId: "y6120QOlsfU" },
+  { id: 19, title: "Sandstorm", genre: "Thriller", year: 2025, rating: 8.3, duration: "1h 46m", language: "Telugu", thumb: "https://picsum.photos/seed/m19/400/225", banner: "https://picsum.photos/seed/b19/1280/720", tags: ["Thriller", "Political"], description: "A journalist embedded in a desert war zone uncovers proof that both sides are fighting for the same oil baron.", cast: ["Rashmika Jr.", "Vijay D. III"], director: "Trivikram II", age: "16+", trending: true, top10: false, genres: ["Thriller"], youtubeId: "kffacxfA7G4" },
+  { id: 20, title: "Infinite Loop", genre: "Sci-Fi", year: 2025, rating: 9.3, duration: "2h 28m", language: "English", thumb: "https://picsum.photos/seed/m20/400/225", banner: "https://picsum.photos/seed/b20/1280/720", tags: ["Sci-Fi", "Mindbender"], description: "A programmer trapped in a recursive time loop must decode the universe's source code before reality collapses.", cast: ["Keira Walsh", "Ajay Sharma"], director: "Denis Villeneuve Jr.", age: "16+", trending: true, top10: true, genres: ["Sci-Fi"], youtubeId: "pBy1zgt0XPc" },
 ];
 
 const MOCK_SERIES = [
-  { id: 101, title: "Void Walkers", genre: "Sci-Fi", year: 2024, rating: 9.2, seasons: 3, episodes: 30, language: "English", thumb: "https://picsum.photos/seed/s1/400/225", banner: "https://picsum.photos/seed/sb1/1280/720", tags: ["Sci-Fi", "Mystery"], description: "Interdimensional agents navigate parallel realities holding clues to prevent multiverse collapse.", cast: ["Ava Stone", "Jin-ho Park"], director: "Nikolai Petrov", age: "16+", trending: true, genres: ["Sci-Fi", "Mystery"] },
-  { id: 102, title: "House of Mirrors", genre: "Thriller", year: 2023, rating: 8.9, seasons: 2, episodes: 16, language: "Hindi", thumb: "https://picsum.photos/seed/s2/400/225", banner: "https://picsum.photos/seed/sb2/1280/720", tags: ["Thriller", "Mystery"], description: "A detective becomes obsessed with a disappearance connected to her own forgotten childhood.", cast: ["Diana Frost", "Ethan Cross"], director: "Amelia Rhodes", age: "18+", trending: true, genres: ["Thriller", "Crime"] },
-  { id: 103, title: "Steel & Shadow", genre: "Fantasy", year: 2024, rating: 8.6, seasons: 1, episodes: 10, language: "Tamil", thumb: "https://picsum.photos/seed/s3/400/225", banner: "https://picsum.photos/seed/sb3/1280/720", tags: ["Fantasy", "Action"], description: "A disgraced knight forges an alliance with a shadow mage to reclaim a stolen kingdom.", cast: ["Roan Blackwell", "Lyra Moon"], director: "Bastian Wolf", age: "16+", trending: false, genres: ["Fantasy", "Action"] },
-  { id: 104, title: "Downlink", genre: "Drama", year: 2024, rating: 8.4, seasons: 2, episodes: 20, language: "Telugu", thumb: "https://picsum.photos/seed/s4/400/225", banner: "https://picsum.photos/seed/sb4/1280/720", tags: ["Drama", "Tech"], description: "A whistleblower uncovers a conspiracy that could reshape global democracy.", cast: ["Isabel Vega", "Nate Holloway"], director: "Sarah Kim", age: "16+", trending: true, genres: ["Drama", "Thriller"] },
-  { id: 105, title: "Midnight Protocol", genre: "Crime", year: 2023, rating: 8.1, seasons: 3, episodes: 24, language: "Malayalam", thumb: "https://picsum.photos/seed/s5/400/225", banner: "https://picsum.photos/seed/sb5/1280/720", tags: ["Crime", "Noir"], description: "A morally complex prosecutor navigates where justice and corruption blur.", cast: ["Marcus King", "Zara Ahmed"], director: "Paulo Mendes", age: "18+", trending: false, genres: ["Crime", "Drama"] },
-  { id: 106, title: "Aurora Protocol", genre: "Sci-Fi", year: 2024, rating: 9.0, seasons: 1, episodes: 8, language: "Kannada", thumb: "https://picsum.photos/seed/s6/400/225", banner: "https://picsum.photos/seed/sb6/1280/720", tags: ["Sci-Fi", "Drama"], description: "Earth's first alien signal triggers a race between nations — and within the human soul.", cast: ["Chen Wei", "Fatou Diallo"], director: "Hiroshi Yamada", age: "13+", trending: true, genres: ["Sci-Fi", "Drama"] },
+  { id: 101, title: "Void Walkers", genre: "Sci-Fi", year: 2024, rating: 9.2, seasons: 3, episodes: 30, language: "English", thumb: "https://picsum.photos/seed/s1/400/225", banner: "https://picsum.photos/seed/sb1/1280/720", tags: ["Sci-Fi", "Mystery"], description: "Interdimensional agents navigate parallel realities holding clues to prevent multiverse collapse.", cast: ["Ava Stone", "Jin-ho Park"], director: "Nikolai Petrov", age: "16+", trending: true, genres: ["Sci-Fi", "Mystery"], youtubeId: "ysz5S6PUM-U" },
+  { id: 102, title: "House of Mirrors", genre: "Thriller", year: 2023, rating: 8.9, seasons: 2, episodes: 16, language: "Hindi", thumb: "https://picsum.photos/seed/s2/400/225", banner: "https://picsum.photos/seed/sb2/1280/720", tags: ["Thriller", "Mystery"], description: "A detective becomes obsessed with a disappearance connected to her own forgotten childhood.", cast: ["Diana Frost", "Ethan Cross"], director: "Amelia Rhodes", age: "18+", trending: true, genres: ["Thriller", "Crime"], youtubeId: "ZbZSe6N_BXs" },
+  { id: 103, title: "Steel & Shadow", genre: "Fantasy", year: 2024, rating: 8.6, seasons: 1, episodes: 10, language: "Tamil", thumb: "https://picsum.photos/seed/s3/400/225", banner: "https://picsum.photos/seed/sb3/1280/720", tags: ["Fantasy", "Action"], description: "A disgraced knight forges an alliance with a shadow mage to reclaim a stolen kingdom.", cast: ["Roan Blackwell", "Lyra Moon"], director: "Bastian Wolf", age: "16+", trending: false, genres: ["Fantasy", "Action"], youtubeId: "LXb3EKWsInQ" },
+  { id: 104, title: "Downlink", genre: "Drama", year: 2024, rating: 8.4, seasons: 2, episodes: 20, language: "Telugu", thumb: "https://picsum.photos/seed/s4/400/225", banner: "https://picsum.photos/seed/sb4/1280/720", tags: ["Drama", "Tech"], description: "A whistleblower uncovers a conspiracy that could reshape global democracy.", cast: ["Isabel Vega", "Nate Holloway"], director: "Sarah Kim", age: "16+", trending: true, genres: ["Drama", "Thriller"], youtubeId: "9DOYQ9IKD7A" },
+  { id: 105, title: "Midnight Protocol", genre: "Crime", year: 2023, rating: 8.1, seasons: 3, episodes: 24, language: "Malayalam", thumb: "https://picsum.photos/seed/s5/400/225", banner: "https://picsum.photos/seed/sb5/1280/720", tags: ["Crime", "Noir"], description: "A morally complex prosecutor navigates where justice and corruption blur.", cast: ["Marcus King", "Zara Ahmed"], director: "Paulo Mendes", age: "18+", trending: false, genres: ["Crime", "Drama"], youtubeId: "dQw4w9WgXcQ" },
+  { id: 106, title: "Aurora Protocol", genre: "Sci-Fi", year: 2024, rating: 9.0, seasons: 1, episodes: 8, language: "Kannada", thumb: "https://picsum.photos/seed/s6/400/225", banner: "https://picsum.photos/seed/sb6/1280/720", tags: ["Sci-Fi", "Drama"], description: "Earth's first alien signal triggers a race between nations — and within the human soul.", cast: ["Chen Wei", "Fatou Diallo"], director: "Hiroshi Yamada", age: "13+", trending: true, genres: ["Sci-Fi", "Drama"], youtubeId: "pBy1zgt0XPc" },
+  { id: 107, title: "Dilli Darbar", genre: "Crime", year: 2025, rating: 8.7, seasons: 2, episodes: 18, language: "Hindi", thumb: "https://picsum.photos/seed/s7/400/225", banner: "https://picsum.photos/seed/sb7/1280/720", tags: ["Crime", "Political"], description: "Power, politics and murder collide in the corridors of Parliament. A journalist documents it all.", cast: ["Nawazuddin Jr.", "Radhika A. II"], director: "Anurag Kashyap III", age: "18+", trending: true, genres: ["Crime", "Drama"], youtubeId: "M7lc1UVf-VE" },
+  { id: 108, title: "Kashmiri Kode", genre: "Thriller", year: 2025, rating: 8.5, seasons: 1, episodes: 8, language: "Hindi", thumb: "https://picsum.photos/seed/s8/400/225", banner: "https://picsum.photos/seed/sb8/1280/720", tags: ["Thriller", "Spy"], description: "A RAW agent goes off-grid in the valley to stop a sleeper cell — but nothing is as it seems.", cast: ["Manoj B. Jr.", "Tabu III"], director: "Vishal Bhardwaj Jr.", age: "18+", trending: false, genres: ["Thriller"], youtubeId: "kffacxfA7G4" },
+  { id: 109, title: "Silicon Karma", genre: "Drama", year: 2024, rating: 8.3, seasons: 2, episodes: 20, language: "English", thumb: "https://picsum.photos/seed/s9/400/225", banner: "https://picsum.photos/seed/sb9/1280/720", tags: ["Drama", "Tech"], description: "The rise and moral collapse of India's most celebrated startup founder.", cast: ["Rahul K.", "Deepika P. III"], director: "Zoya A. Jr.", age: "13+", trending: true, genres: ["Drama", "Tech"], youtubeId: "y6120QOlsfU" },
+  { id: 110, title: "Kochi Noir", genre: "Crime", year: 2024, rating: 8.8, seasons: 1, episodes: 6, language: "Malayalam", thumb: "https://picsum.photos/seed/s10/400/225", banner: "https://picsum.photos/seed/sb10/1280/720", tags: ["Crime", "Neo-Noir"], description: "A retired cop, a missing heiress, and backwater smugglers — Kerala's most stylish crime story.", cast: ["Fahadh F. Jr.", "Parvathy III"], director: "Mahesh N. Jr.", age: "16+", trending: true, genres: ["Crime", "Thriller"], youtubeId: "ioNng23DkIM" },
 ];
 
 const ALL_CONTENT = [...MOCK_MOVIES, ...MOCK_SERIES];
@@ -513,7 +525,7 @@ function AppProvider({ children }) {
 
   return (
     <AppContext.Provider value={{
-      user, profile, dbLoading,
+      user, profile, setProfile, dbLoading,
       watchlist, favorites, watchHistory, ratings, continueWatching,
       currentPage, setCurrentPage, selectedContent, setSelectedContent,
       notification, showNotification, authModal, setAuthModal,
@@ -707,55 +719,331 @@ function Notification() {
   );
 }
 
+// ─── PASSWORD STRENGTH ────────────────────────────────────────
+function getPasswordStrength(pw) {
+  if (!pw) return { score: 0, label: "", color: "transparent" };
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (pw.length >= 12) score++;
+  if (/[A-Z]/.test(pw)) score++;
+  if (/[0-9]/.test(pw)) score++;
+  if (/[^A-Za-z0-9]/.test(pw)) score++;
+  const labels = ["", "Weak", "Fair", "Good", "Strong", "Very Strong"];
+  const colors = ["transparent", "#ef4444", "#f59e0b", "#eab308", "#22c55e", "#10b981"];
+  return { score, label: labels[score] || "Strong", color: colors[Math.min(score, 5)] };
+}
+
 // ─── AUTH MODAL ───────────────────────────────────────────────
 function AuthModal() {
   const { authModal, setAuthModal, dbLogin, dbSignUp, dbLoading } = useApp();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [step, setStep] = useState(1); // 1=method, 2=details, 3=verify
+  const [isLogin, setIsLogin] = useState(authModal === "login");
   const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailCode, setEmailCode] = useState("");
+  const [codeSent, setCodeSent] = useState(false);
+  const [codeVerified, setCodeVerified] = useState(false);
+  const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
+  const [showPw, setShowPw] = useState(false);
+  const [showPw2, setShowPw2] = useState(false);
   const [err, setErr] = useState("");
-  const isLogin = authModal === "login";
+  const [socialLoading, setSocialLoading] = useState("");
+  const [photoCapture, setPhotoCapture] = useState(false);
+  const [capturedPhoto, setCapturedPhoto] = useState(null);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [streamObj, setStreamObj] = useState(null);
+
+  const pwStrength = getPasswordStrength(password);
+
+  useEffect(() => {
+    setIsLogin(authModal === "login");
+    setStep(1); setErr(""); setName(""); setAge(""); setEmail(""); setPassword(""); setPassword2("");
+    setCodeSent(false); setCodeVerified(false); setCapturedPhoto(null);
+  }, [authModal]);
+
   if (!authModal) return null;
 
-  const handle = async () => {
-    if (!email || !password) { setErr("Please fill all fields"); return; }
+  const SOCIALS = [
+    { id: "google",   label: "Continue with Google",   bg: "#fff",     color: "#1a1a1a", border: "#e5e7eb", logo: "https://www.svgrepo.com/show/475656/google-color.svg" },
+    { id: "github",   label: "Continue with GitHub",   bg: "#24292e",  color: "#fff",    border: "#24292e", logo: "https://www.svgrepo.com/show/475654/github-color.svg" },
+    { id: "facebook", label: "Continue with Facebook", bg: "#1877f2",  color: "#fff",    border: "#1877f2", logo: "https://www.svgrepo.com/show/475647/facebook-color.svg" },
+    { id: "x",        label: "Continue with X",        bg: "#000",     color: "#fff",    border: "#333",    logo: "https://www.svgrepo.com/show/511330/twitter-154.svg" },
+  ];
+
+  const handleSocial = async (provider) => {
+    setSocialLoading(provider);
+    await new Promise(r => setTimeout(r, 1200));
+    setSocialLoading("");
+    // In real implementation: supabase.auth.signInWithOAuth({ provider })
+    // For demo: simulate login
+    const demoUser = { id: "demo", email: `user@${provider}.demo`, user_metadata: { display_name: `${provider.charAt(0).toUpperCase() + provider.slice(1)} User` } };
+    const { dbLogin } = useApp ? { dbLogin: null } : {};
+    // Just use localLogin path via dbSignUp demo mode
+    await dbSignUp(`user@${provider}.demo`, "demo1234", `${provider} User`);
+  };
+
+  const sendCode = () => {
+    if (!email || !email.includes("@")) { setErr("Enter a valid email first"); return; }
     setErr("");
-    const ok = isLogin ? await dbLogin(email, password) : await dbSignUp(email, password, name);
-    if (!ok) setErr("Please check your credentials");
+    setCodeSent(true);
+    // In real: send OTP via supabase or email service
+  };
+  const verifyCode = () => {
+    // Demo: any 6-digit code works
+    if (emailCode.length === 6) { setCodeVerified(true); setErr(""); }
+    else setErr("Enter the 6-digit code sent to your email");
+  };
+
+  // Camera capture
+  const startCamera = async () => {
+    setPhotoCapture(true);
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      setStreamObj(stream);
+      if (videoRef.current) videoRef.current.srcObject = stream;
+    } catch { setErr("Camera access denied"); setPhotoCapture(false); }
+  };
+  const snapPhoto = () => {
+    if (!videoRef.current || !canvasRef.current) return;
+    const ctx = canvasRef.current.getContext("2d");
+    canvasRef.current.width = videoRef.current.videoWidth;
+    canvasRef.current.height = videoRef.current.videoHeight;
+    ctx.drawImage(videoRef.current, 0, 0);
+    setCapturedPhoto(canvasRef.current.toDataURL("image/jpeg", 0.8));
+    stopCamera();
+  };
+  const stopCamera = () => {
+    streamObj?.getTracks().forEach(t => t.stop());
+    setStreamObj(null); setPhotoCapture(false);
+  };
+
+  const handleSubmit = async () => {
+    setErr("");
+    if (isLogin) {
+      if (!email || !password) { setErr("Please fill all fields"); return; }
+      const ok = await dbLogin(email, password);
+      if (!ok) setErr("Invalid email or password");
+    } else {
+      if (!name.trim()) { setErr("Please enter your name"); return; }
+      if (!age || isNaN(age) || +age < 13 || +age > 120) { setErr("Please enter a valid age (13+)"); return; }
+      if (!email || !email.includes("@")) { setErr("Please enter a valid email"); return; }
+      if (!codeVerified) { setErr("Please verify your email first"); return; }
+      if (pwStrength.score < 2) { setErr("Password is too weak"); return; }
+      if (password !== password2) { setErr("Passwords do not match"); return; }
+      const ok = await dbSignUp(email, password, name);
+      if (!ok) setErr("Sign up failed — try again");
+    }
   };
 
   return (
     <div className="modal-overlay" onClick={() => setAuthModal(null)}>
-      <div className="modal" onClick={e => e.stopPropagation()}>
-        <button className="btn-icon" onClick={() => setAuthModal(null)} style={{ position: "absolute", top: 16, right: 16 }}>
+      <div className="modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 500, maxHeight: "90vh", overflowY: "auto" }}>
+        <button className="btn-icon" onClick={() => setAuthModal(null)} style={{ position: "absolute", top: 16, right: 16, zIndex: 2 }}>
           <Icon name="x" size={18} />
         </button>
-        <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <span style={{ fontFamily: "'Syne',sans-serif", fontSize: 26, fontWeight: 800, color: C.accent, letterSpacing: 2 }}>N<span style={{ color: C.text }}>OVA</span></span>
-          <div style={{ marginTop: 10, fontSize: 20, fontWeight: 700 }}>{isLogin ? "Welcome back" : "Create account"}</div>
+
+        {/* Header */}
+        <div style={{ textAlign: "center", marginBottom: 24 }}>
+          <span style={{ fontFamily: "'Syne',sans-serif", fontSize: 28, fontWeight: 800, color: C.accent, letterSpacing: 2 }}>
+            N<span style={{ color: C.text }}>OVA</span>
+          </span>
+          <div style={{ marginTop: 8, fontSize: 20, fontWeight: 700 }}>
+            {isLogin ? "Welcome back" : "Create your account"}
+          </div>
           <div style={{ color: C.muted, fontSize: 13, marginTop: 4 }}>
-            {isLogin ? "Sign in to continue" : "Start your streaming journey"}
+            {isLogin ? "Sign in to continue watching" : "Start your streaming journey today"}
           </div>
         </div>
+
+        {/* Social Buttons */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+          {SOCIALS.map(s => (
+            <button key={s.id} disabled={!!socialLoading}
+              onClick={() => handleSocial(s.id)}
+              style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 16px", borderRadius: 8,
+                background: s.bg, color: s.color, border: `1px solid ${s.border}`,
+                cursor: "pointer", fontFamily: "'DM Sans',sans-serif", fontSize: 14, fontWeight: 600,
+                opacity: socialLoading && socialLoading !== s.id ? 0.5 : 1, transition: "opacity 0.2s, transform 0.15s" }}
+              onMouseEnter={e => e.currentTarget.style.transform = "translateY(-1px)"}
+              onMouseLeave={e => e.currentTarget.style.transform = "none"}>
+              {socialLoading === s.id
+                ? <div style={{ width: 20, height: 20, borderRadius: "50%", border: `2px solid ${s.color}`, borderTopColor: "transparent", animation: "spin 0.7s linear infinite" }} />
+                : <img src={s.logo} alt={s.id} style={{ width: 20, height: 20, objectFit: "contain" }} />}
+              <span>{socialLoading === s.id ? "Connecting…" : s.label}</span>
+            </button>
+          ))}
+        </div>
+
+        {/* Divider */}
+        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+          <div style={{ flex: 1, height: 1, background: C.border }} />
+          <span style={{ fontSize: 12, color: C.muted, whiteSpace: "nowrap" }}>or with email</span>
+          <div style={{ flex: 1, height: 1, background: C.border }} />
+        </div>
+
+        {/* Form Fields */}
         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {!isLogin && <input placeholder="Display name" value={name} onChange={e => setName(e.target.value)} style={{ width: "100%" }} />}
-          <input placeholder="Email address" type="email" value={email} onChange={e => setEmail(e.target.value)} style={{ width: "100%" }} />
-          <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} style={{ width: "100%" }}
-            onKeyDown={e => e.key === "Enter" && handle()} />
-          {err && <div style={{ color: "#ef4444", fontSize: 13 }}>{err}</div>}
-          <button className="btn-primary" style={{ width: "100%", height: 46, marginTop: 4 }} onClick={handle} disabled={dbLoading}>
-            {dbLoading ? "Please wait…" : isLogin ? "Sign In" : "Create Account"}
+          {!isLogin && (
+            <>
+              {/* Name */}
+              <div>
+                <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Full Name *</label>
+                <input placeholder="Your full name" value={name} onChange={e => setName(e.target.value)} style={{ width: "100%" }} />
+              </div>
+              {/* Age */}
+              <div>
+                <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Age * (13+ required)</label>
+                <input placeholder="Your age" type="number" min="13" max="120" value={age} onChange={e => setAge(e.target.value)} style={{ width: "100%" }} />
+              </div>
+            </>
+          )}
+
+          {/* Email + Verify */}
+          <div>
+            <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Email Address *</label>
+            <div style={{ display: "flex", gap: 8 }}>
+              <input placeholder="you@email.com" type="email" value={email} onChange={e => { setEmail(e.target.value); setCodeVerified(false); setCodeSent(false); }}
+                style={{ flex: 1 }} />
+              {!isLogin && (
+                <button onClick={sendCode} disabled={codeVerified}
+                  style={{ padding: "0 14px", borderRadius: 6, border: `1px solid ${codeVerified ? "#22c55e" : C.accent}`,
+                    background: codeVerified ? "rgba(34,197,94,0.1)" : "rgba(200,16,46,0.1)",
+                    color: codeVerified ? "#22c55e" : C.accent, cursor: codeVerified ? "default" : "pointer", fontSize: 12, fontWeight: 600, whiteSpace: "nowrap" }}>
+                  {codeVerified ? "✓ Verified" : codeSent ? "Resend" : "Send Code"}
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* OTP Input */}
+          {!isLogin && codeSent && !codeVerified && (
+            <div>
+              <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>
+                Verification Code <span style={{ color: C.muted }}>(check your email — demo: any 6 digits)</span>
+              </label>
+              <div style={{ display: "flex", gap: 8 }}>
+                <input placeholder="6-digit code" maxLength={6} value={emailCode} onChange={e => setEmailCode(e.target.value.replace(/\D/g, ""))}
+                  style={{ flex: 1, letterSpacing: 6, fontSize: 18, textAlign: "center" }} />
+                <button onClick={verifyCode}
+                  style={{ padding: "0 14px", borderRadius: 6, border: `1px solid ${C.accent}`,
+                    background: "rgba(200,16,46,0.1)", color: C.accent, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>
+                  Verify
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Password */}
+          <div>
+            <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Password *</label>
+            <div style={{ position: "relative" }}>
+              <input placeholder={isLogin ? "Your password" : "Create strong password"} type={showPw ? "text" : "password"}
+                value={password} onChange={e => setPassword(e.target.value)}
+                onKeyDown={e => e.key === "Enter" && isLogin && handleSubmit()}
+                style={{ width: "100%", paddingRight: 44 }} />
+              <button onClick={() => setShowPw(v => !v)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
+                background: "none", border: "none", color: C.muted, cursor: "pointer", fontSize: 16 }}>
+                {showPw ? "🙈" : "👁️"}
+              </button>
+            </div>
+            {!isLogin && password && (
+              <div style={{ marginTop: 6 }}>
+                <div style={{ display: "flex", gap: 4, marginBottom: 4 }}>
+                  {[1,2,3,4,5].map(i => (
+                    <div key={i} style={{ flex: 1, height: 3, borderRadius: 2,
+                      background: i <= pwStrength.score ? pwStrength.color : C.border, transition: "background 0.3s" }} />
+                  ))}
+                </div>
+                <div style={{ fontSize: 11, color: pwStrength.color }}>{pwStrength.label}
+                  {pwStrength.score < 3 && <span style={{ color: C.muted }}> — add uppercase, numbers & symbols</span>}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Confirm Password */}
+          {!isLogin && (
+            <div>
+              <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Confirm Password *</label>
+              <div style={{ position: "relative" }}>
+                <input placeholder="Repeat your password" type={showPw2 ? "text" : "password"}
+                  value={password2} onChange={e => setPassword2(e.target.value)}
+                  style={{ width: "100%", paddingRight: 44, borderColor: password2 && password2 !== password ? "#ef4444" : "" }} />
+                <button onClick={() => setShowPw2(v => !v)} style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)",
+                  background: "none", border: "none", color: C.muted, cursor: "pointer", fontSize: 16 }}>
+                  {showPw2 ? "🙈" : "👁️"}
+                </button>
+              </div>
+              {password2 && password !== password2 && (
+                <div style={{ fontSize: 11, color: "#ef4444", marginTop: 4 }}>Passwords do not match</div>
+              )}
+            </div>
+          )}
+
+          {/* Photo Capture */}
+          {!isLogin && (
+            <div>
+              <label style={{ fontSize: 12, color: C.muted, marginBottom: 8, display: "block" }}>Profile Photo (optional)</label>
+              {capturedPhoto ? (
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <img src={capturedPhoto} alt="captured" style={{ width: 60, height: 60, borderRadius: "50%", objectFit: "cover", border: `2px solid ${C.accent}` }} />
+                  <button onClick={() => setCapturedPhoto(null)}
+                    style={{ fontSize: 12, color: C.muted, background: "none", border: `1px solid ${C.border}`, borderRadius: 6, padding: "6px 12px", cursor: "pointer" }}>
+                    Retake
+                  </button>
+                </div>
+              ) : photoCapture ? (
+                <div style={{ borderRadius: 8, overflow: "hidden", position: "relative" }}>
+                  <video ref={videoRef} autoPlay playsInline style={{ width: "100%", borderRadius: 8, display: "block" }} />
+                  <canvas ref={canvasRef} style={{ display: "none" }} />
+                  <div style={{ display: "flex", gap: 10, marginTop: 10 }}>
+                    <button className="btn-primary" onClick={snapPhoto} style={{ flex: 1, padding: "10px" }}>📸 Capture</button>
+                    <button onClick={stopCamera} style={{ flex: 1, padding: "10px", background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, color: C.text, cursor: "pointer" }}>Cancel</button>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ display: "flex", gap: 10 }}>
+                  <button onClick={startCamera}
+                    style={{ flex: 1, padding: "10px", background: C.card, border: `1px solid ${C.border}`, borderRadius: 8,
+                      color: C.text, cursor: "pointer", fontSize: 13, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+                    📷 Open Camera
+                  </button>
+                  <label style={{ flex: 1, padding: "10px", background: C.card, border: `1px solid ${C.border}`, borderRadius: 8,
+                    color: C.text, cursor: "pointer", fontSize: 13, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+                    🖼️ Upload Photo
+                    <input type="file" accept="image/*" style={{ display: "none" }} onChange={e => {
+                      const file = e.target.files?.[0];
+                      if (file) { const reader = new FileReader(); reader.onload = ev => setCapturedPhoto(ev.target.result); reader.readAsDataURL(file); }
+                    }} />
+                  </label>
+                </div>
+              )}
+            </div>
+          )}
+
+          {err && <div style={{ color: "#ef4444", fontSize: 13, padding: "8px 12px", background: "rgba(239,68,68,0.08)", borderRadius: 6, border: "1px solid rgba(239,68,68,0.2)" }}>{err}</div>}
+
+          <button className="btn-primary" style={{ width: "100%", height: 48, marginTop: 4, fontSize: 15 }} onClick={handleSubmit} disabled={dbLoading}>
+            {dbLoading ? <span style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+              <div style={{ width: 16, height: 16, borderRadius: "50%", border: "2px solid rgba(255,255,255,0.3)", borderTopColor: "white", animation: "spin 0.7s linear infinite" }} />
+              Please wait…</span>
+            : isLogin ? "Sign In →" : "Create Account →"}
           </button>
         </div>
-        <div style={{ textAlign: "center", marginTop: 20, fontSize: 13, color: C.muted }}>
+
+        <div style={{ textAlign: "center", marginTop: 18, fontSize: 13, color: C.muted }}>
           {isLogin ? "New to Nova? " : "Already have an account? "}
-          <button onClick={() => setAuthModal(isLogin ? "signup" : "login")}
-            style={{ background: "none", border: "none", color: C.accent, cursor: "pointer", fontSize: 13, fontWeight: 600 }}>
-            {isLogin ? "Sign Up" : "Sign In"}
+          <button onClick={() => { setIsLogin(v => !v); setErr(""); }}
+            style={{ background: "none", border: "none", color: C.accent, cursor: "pointer", fontSize: 13, fontWeight: 700 }}>
+            {isLogin ? "Sign Up Free" : "Sign In"}
           </button>
         </div>
-        <div style={{ marginTop: 16, padding: "12px 16px", background: "rgba(200,16,46,0.08)", borderRadius: 8, border: `1px solid rgba(200,16,46,0.2)`, fontSize: 12, color: C.muted }}>
-          💡 <strong style={{ color: C.text }}>Demo mode:</strong> If Supabase isn't configured, you'll log in locally with any email/password.
+
+        <div style={{ marginTop: 16, padding: "10px 14px", background: "rgba(200,16,46,0.06)", borderRadius: 8, border: `1px solid rgba(200,16,46,0.15)`, fontSize: 11, color: C.muted }}>
+          💡 <strong style={{ color: C.text }}>Demo mode:</strong> Social login simulates auth. Email/password uses real Supabase if configured, otherwise runs locally.
         </div>
       </div>
     </div>
@@ -1137,95 +1425,131 @@ function SearchOverlay({ onClose }) {
   );
 }
 
-// ─── VIDEO PLAYER ─────────────────────────────────────────────
+// ─── VIDEO PLAYER (YouTube Embed) ────────────────────────────
 function VideoPlayer() {
-  const { playerContent, setCurrentPage, updateProgress } = useApp();
-  const [playing, setPlaying] = useState(true);
+  const { playerContent, setCurrentPage, updateProgress, watchHistory, favorites, ratings } = useApp();
   const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(80);
-  const [showControls, setShowControls] = useState(true);
-  const timerRef = useRef(null);
+  const [showInfo, setShowInfo] = useState(true);
+  const related = getRecommendations(watchHistory, favorites, ratings, playerContent).slice(0, 6);
 
   useEffect(() => {
-    let prog = progress;
-    const interval = setInterval(() => {
-      if (playing) {
-        prog = Math.min(100, prog + 0.05);
-        setProgress(prog);
-        if (prog % 5 < 0.1) updateProgress(playerContent?.id, Math.round(prog));
-      }
+    const timer = setInterval(() => {
+      setProgress(p => Math.min(100, p + 0.04));
     }, 200);
-    return () => clearInterval(interval);
-  }, [playing]);
-
-  const resetControlTimer = () => {
-    setShowControls(true);
-    clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => setShowControls(false), 3000);
-  };
+    return () => clearInterval(timer);
+  }, []);
 
   const close = () => {
     updateProgress(playerContent?.id, Math.round(progress));
     setCurrentPage("home");
   };
 
-  const formatTime = (p) => {
-    const total = 120; const cur = Math.floor(p * total / 100);
-    return `${Math.floor(cur / 60)}:${String(cur % 60).padStart(2, "0")}`;
-  };
+  const ytId = playerContent?.youtubeId || "dQw4w9WgXcQ";
 
   return (
-    <div className="player-wrap" onMouseMove={resetControlTimer} onClick={resetControlTimer}>
-      <div style={{ flex: 1, background: `url(${playerContent?.banner}) center/cover no-repeat`, position: "relative" }}>
-        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.38)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-          {!playing && (
-            <div style={{ width: 76, height: 76, borderRadius: "50%", background: "rgba(200,16,46,0.9)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
-              onClick={() => setPlaying(true)}>
-              <Icon name="play" size={32} color="white" />
+    <div style={{ minHeight: "100vh", background: C.bg, display: "flex", flexDirection: "column" }}>
+      {/* Top bar */}
+      <div style={{ padding: "16px 24px", display: "flex", alignItems: "center", gap: 14, background: C.surface, borderBottom: `1px solid ${C.border}` }}>
+        <button className="btn-icon" onClick={close} style={{ background: C.card, border: `1px solid ${C.border}`, width: 38, height: 38 }}>
+          <Icon name="arrowLeft" size={18} />
+        </button>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontFamily: "'Syne',sans-serif", fontSize: 18, fontWeight: 700 }}>{playerContent?.title}</div>
+          <div style={{ fontSize: 12, color: C.muted }}>{playerContent?.year} · {playerContent?.language} · {playerContent?.age}</div>
+        </div>
+        <button onClick={() => setShowInfo(v => !v)}
+          style={{ padding: "7px 14px", borderRadius: 6, border: `1px solid ${C.border}`, background: C.card,
+            color: C.muted, cursor: "pointer", fontSize: 12 }}>
+          {showInfo ? "Hide Info" : "Show Info"}
+        </button>
+      </div>
+
+      {/* Main area */}
+      <div style={{ display: "flex", flex: 1, gap: 0 }}>
+        {/* YouTube Player */}
+        <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+          <div style={{ position: "relative", width: "100%", paddingTop: "56.25%", background: "#000" }}>
+            <iframe
+              src={`https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none" }}
+              title={playerContent?.title}
+            />
+          </div>
+
+          {/* Progress tracker */}
+          <div style={{ padding: "14px 20px", background: C.surface, borderTop: `1px solid ${C.border}` }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, color: C.muted, marginBottom: 6 }}>
+              <span>Watch Progress (demo)</span>
+              <span>{Math.round(progress)}%</span>
             </div>
-          )}
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: `${progress}%` }} />
+            </div>
+          </div>
         </div>
 
-        {/* Top bar */}
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, padding: "20px 28px", background: "linear-gradient(to bottom, rgba(0,0,0,0.8), transparent)", display: "flex", alignItems: "center", gap: 14, opacity: showControls ? 1 : 0, transition: "opacity 0.3s" }}>
-          <button className="btn-icon" onClick={close}><Icon name="arrowLeft" size={20} /></button>
-          <div>
-            <div style={{ fontFamily: "'Syne',sans-serif", fontSize: 20, fontWeight: 700, letterSpacing: 0.5 }}>{playerContent?.title}</div>
-            <div style={{ fontSize: 12, color: C.muted }}>{playerContent?.year} · {playerContent?.language}</div>
-          </div>
-        </div>
+        {/* Side info panel */}
+        {showInfo && (
+          <div style={{ width: 320, background: C.surface, borderLeft: `1px solid ${C.border}`, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+            {/* Content info */}
+            <div style={{ padding: "20px" }}>
+              <img src={playerContent?.banner} alt="" style={{ width: "100%", borderRadius: 8, marginBottom: 14, objectFit: "cover", height: 140 }} />
+              <div style={{ fontFamily: "'Syne',sans-serif", fontSize: 16, fontWeight: 700, marginBottom: 6 }}>{playerContent?.title}</div>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 10 }}>
+                {playerContent?.tags?.map(t => <span key={t} className="tag">{t}</span>)}
+                <span style={{ fontSize: 11, color: C.gold }}>★ {playerContent?.rating}</span>
+              </div>
+              <p style={{ fontSize: 13, color: C.muted, lineHeight: 1.6, marginBottom: 12 }}>{playerContent?.description}</p>
+              <div style={{ fontSize: 12, color: C.muted }}>
+                <div style={{ marginBottom: 4 }}><strong style={{ color: C.text }}>Director:</strong> {playerContent?.director}</div>
+                <div><strong style={{ color: C.text }}>Cast:</strong> {playerContent?.cast?.join(", ")}</div>
+              </div>
+            </div>
 
-        {/* Bottom controls */}
-        <div className="player-controls" style={{ opacity: showControls ? 1 : 0, transition: "opacity 0.3s" }}>
-          <div style={{ marginBottom: 14, cursor: "pointer" }}
-            onClick={e => { const rect = e.currentTarget.getBoundingClientRect(); setProgress(((e.clientX - rect.left) / rect.width) * 100); }}>
-            <div style={{ height: 4, background: "rgba(255,255,255,0.25)", borderRadius: 2, position: "relative" }}>
-              <div style={{ width: `${progress}%`, height: "100%", background: C.accent, borderRadius: 2, transition: "width 0.2s" }} />
-              <div style={{ position: "absolute", top: "50%", left: `${progress}%`, transform: "translate(-50%,-50%)", width: 12, height: 12, borderRadius: "50%", background: "white" }} />
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 5, fontSize: 11, color: "rgba(255,255,255,0.6)" }}>
-              <span>{formatTime(progress)}</span>
-              <span>{playerContent?.duration || "2:00:00"}</span>
-            </div>
+            {/* AI Recommendations below player */}
+            {related.length > 0 && (
+              <div style={{ padding: "0 20px 20px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                  <span className="ai-badge">
+                    <Icon name="sparkles" size={9} color="white" style={{ display: "inline", verticalAlign: "middle", marginRight: 3 }} />
+                    AI PICKS
+                  </span>
+                  <span style={{ fontSize: 13, fontWeight: 700 }}>Up Next</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {related.map(item => <MiniContentCard key={item.id} item={item} />)}
+                </div>
+              </div>
+            )}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <button className="btn-icon" onClick={() => setProgress(p => Math.max(0, p - 1.4))} style={{ fontSize: 12, color: C.muted, width: 36 }}>−10s</button>
-            <button className="btn-icon" onClick={() => setPlaying(v => !v)} style={{ width: 46, height: 46, background: "rgba(255,255,255,0.12)", borderRadius: "50%" }}>
-              <Icon name={playing ? "pause" : "play"} size={20} color="white" />
-            </button>
-            <button className="btn-icon" onClick={() => setProgress(p => Math.min(100, p + 1.4))} style={{ fontSize: 12, color: C.muted, width: 36 }}>+10s</button>
-            <Icon name="volume" size={18} color={C.muted} />
-            <input type="range" min="0" max="100" value={volume} onChange={e => setVolume(+e.target.value)} style={{ width: 72, accentColor: C.accent }} />
-            <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
-              <button className="btn-icon"><Icon name="maximize" size={18} /></button>
-            </div>
-          </div>
-          {progress < 10 && (
-            <button className="btn-ghost" style={{ position: "absolute", bottom: 100, right: 28, padding: "8px 20px", fontSize: 13 }} onClick={() => setProgress(10)}>
-              Skip Intro →
-            </button>
-          )}
+        )}
+      </div>
+    </div>
+  );
+}
+
+function MiniContentCard({ item }) {
+  const { setSelectedContent, setCurrentPage, playContent } = useApp();
+  return (
+    <div style={{ display: "flex", gap: 10, cursor: "pointer", padding: "8px", borderRadius: 8, transition: "background 0.2s" }}
+      onMouseEnter={e => e.currentTarget.style.background = C.card}
+      onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+      onClick={() => { setSelectedContent(item); setCurrentPage("detail"); }}>
+      <div style={{ position: "relative", flexShrink: 0 }}>
+        <img src={item.thumb} alt={item.title} style={{ width: 90, height: 52, objectFit: "cover", borderRadius: 6 }} />
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center",
+          opacity: 0, transition: "opacity 0.2s", background: "rgba(0,0,0,0.5)", borderRadius: 6 }}
+          onMouseEnter={e => e.currentTarget.style.opacity = 1}
+          onMouseLeave={e => e.currentTarget.style.opacity = 0}>
+          <button className="btn-primary" style={{ padding: "4px 10px", fontSize: 11 }}
+            onClick={e => { e.stopPropagation(); playContent(item); }}>▶</button>
         </div>
+      </div>
+      <div style={{ flex: 1, overflow: "hidden" }}>
+        <div style={{ fontSize: 13, fontWeight: 600, lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.title}</div>
+        <div style={{ fontSize: 11, color: C.muted, marginTop: 3 }}>{item.genre} · ★ {item.rating}</div>
       </div>
     </div>
   );
@@ -1442,13 +1766,27 @@ function CollectionPage({ type }) {
 
 // ─── PROFILE PAGE ─────────────────────────────────────────────
 function ProfilePage() {
-  const { user, profile, watchlist, favorites, watchHistory, dbLogout, setCurrentPage, t, uiLang, setUiLang } = useApp();
+  const { user, profile, setProfile, watchlist, favorites, watchHistory, continueWatching, dbLogout, setCurrentPage, showNotification, t, uiLang, setUiLang } = useApp();
   const [editMode, setEditMode] = useState(false);
   const [displayName, setDisplayName] = useState(profile?.display_name || "");
+  const [bio, setBio] = useState(profile?.bio || "");
+  const [phone, setPhone] = useState(profile?.phone || "");
+  const [dob, setDob] = useState(profile?.dob || "");
+  const [gender, setGender] = useState(profile?.gender || "");
+  const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl || null);
+  const [coverUrl, setCoverUrl] = useState(profile?.coverUrl || null);
+  const [photoCapture, setPhotoCapture] = useState(false);
+  const [stream, setStream] = useState(null);
+  const [activeTab, setActiveTab] = useState("overview");
   const [showLangPicker, setShowLangPicker] = useState(false);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+
+  const langObj = LANGUAGES.find(l => l.code === uiLang) || LANGUAGES[0];
 
   if (!user) return (
     <div style={{ paddingTop: 140, textAlign: "center" }}>
+      <div style={{ fontSize: 48, marginBottom: 16 }}>🔒</div>
       <div style={{ fontSize: 18, marginBottom: 20, color: C.muted }}>Please sign in to view your profile</div>
     </div>
   );
@@ -1457,84 +1795,311 @@ function ProfilePage() {
     { label: t("watchlist"), value: watchlist.length, icon: "list", page: "watchlist" },
     { label: "Favorites", value: favorites.length, icon: "heart", page: "favorites" },
     { label: "Watched", value: watchHistory.length, icon: "playCircle", page: "home" },
+    { label: "In Progress", value: continueWatching.length, icon: "play", page: "home" },
   ];
 
-  const langObj = LANGUAGES.find(l => l.code === uiLang) || LANGUAGES[0];
+  const handlePhotoFile = (e, type) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      if (type === "avatar") setAvatarUrl(ev.target.result);
+      else setCoverUrl(ev.target.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const startCamera = async () => {
+    setPhotoCapture(true);
+    try {
+      const s = await navigator.mediaDevices.getUserMedia({ video: true });
+      setStream(s);
+      if (videoRef.current) videoRef.current.srcObject = s;
+    } catch { showNotification("Camera access denied", "error"); setPhotoCapture(false); }
+  };
+
+  const snapPhoto = () => {
+    if (!videoRef.current || !canvasRef.current) return;
+    const ctx = canvasRef.current.getContext("2d");
+    canvasRef.current.width = videoRef.current.videoWidth;
+    canvasRef.current.height = videoRef.current.videoHeight;
+    ctx.drawImage(videoRef.current, 0, 0);
+    setAvatarUrl(canvasRef.current.toDataURL("image/jpeg", 0.85));
+    stream?.getTracks().forEach(t => t.stop());
+    setStream(null); setPhotoCapture(false);
+  };
+
+  const saveProfile = () => {
+    if (setProfile) setProfile(prev => ({ ...prev, display_name: displayName, bio, phone, dob, gender, avatarUrl, coverUrl }));
+    setEditMode(false);
+    showNotification("Profile updated ✓");
+  };
+
+  const TABS = ["overview", "activity", "settings"];
 
   return (
-    <div style={{ paddingTop: 90, padding: "90px 5% 40px", maxWidth: 860, margin: "0 auto" }} className="fade-up">
-      {/* Header */}
-      <div style={{ display: "flex", gap: 28, alignItems: "center", marginBottom: 40, flexWrap: "wrap" }}>
-        <div style={{ position: "relative" }}>
-          <img src={`https://api.dicebear.com/8.x/personas/svg?seed=${profile?.avatar_seed || user.email}`}
-            style={{ width: 110, height: 110, borderRadius: "50%", border: `3px solid ${C.accent}`, background: C.card }} />
+    <div className="fade-up" style={{ paddingTop: 66 }}>
+      {/* Cover Photo */}
+      <div style={{ position: "relative", height: 220, background: coverUrl ? `url(${coverUrl}) center/cover no-repeat` : `linear-gradient(135deg, #1a0010 0%, ${C.surface} 50%, #0a0820 100%)`, overflow: "hidden" }}>
+        {!coverUrl && (
+          <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(ellipse at 20% 50%, rgba(200,16,46,0.15) 0%, transparent 60%), radial-gradient(ellipse at 80% 50%, rgba(79,70,229,0.1) 0%, transparent 60%)" }} />
+        )}
+        {editMode && (
+          <label style={{ position: "absolute", bottom: 14, right: 14, padding: "8px 14px", background: "rgba(0,0,0,0.6)", border: `1px solid ${C.border}`, borderRadius: 8,
+            color: "white", cursor: "pointer", fontSize: 12, backdropFilter: "blur(8px)", display: "flex", alignItems: "center", gap: 6 }}>
+            🖼️ Change Cover
+            <input type="file" accept="image/*" style={{ display: "none" }} onChange={e => handlePhotoFile(e, "cover")} />
+          </label>
+        )}
+      </div>
+
+      {/* Profile Header */}
+      <div style={{ padding: "0 5%", maxWidth: 900, margin: "0 auto" }}>
+        <div style={{ display: "flex", gap: 22, alignItems: "flex-end", marginTop: -55, marginBottom: 28, flexWrap: "wrap" }}>
+          {/* Avatar */}
+          <div style={{ position: "relative", flexShrink: 0 }}>
+            {photoCapture ? (
+              <div style={{ background: C.surface, border: `2px solid ${C.border}`, borderRadius: 12, padding: 10, width: 280 }}>
+                <video ref={videoRef} autoPlay playsInline style={{ width: "100%", borderRadius: 8, display: "block" }} />
+                <canvas ref={canvasRef} style={{ display: "none" }} />
+                <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                  <button className="btn-primary" onClick={snapPhoto} style={{ flex: 1, padding: "8px", fontSize: 12 }}>📸 Snap</button>
+                  <button onClick={() => { stream?.getTracks().forEach(t => t.stop()); setStream(null); setPhotoCapture(false); }}
+                    style={{ flex: 1, padding: "8px", background: C.card, border: `1px solid ${C.border}`, borderRadius: 6, color: C.text, cursor: "pointer", fontSize: 12 }}>Cancel</button>
+                </div>
+              </div>
+            ) : (
+              <div style={{ position: "relative" }}>
+                {avatarUrl
+                  ? <img src={avatarUrl} alt="avatar" style={{ width: 110, height: 110, borderRadius: "50%", objectFit: "cover", border: `3px solid ${C.accent}`, boxShadow: `0 0 0 4px ${C.bg}` }} />
+                  : <img src={`https://api.dicebear.com/8.x/personas/svg?seed=${profile?.avatar_seed || user.email}`}
+                      style={{ width: 110, height: 110, borderRadius: "50%", border: `3px solid ${C.accent}`, background: C.card, boxShadow: `0 0 0 4px ${C.bg}` }} />
+                }
+                {editMode && (
+                  <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "rgba(0,0,0,0.55)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 4 }}>
+                    <label style={{ cursor: "pointer", fontSize: 11, color: "white", textAlign: "center", padding: "2px 6px",
+                      background: "rgba(200,16,46,0.8)", borderRadius: 4 }}>
+                      📁 Upload
+                      <input type="file" accept="image/*" style={{ display: "none" }} onChange={e => handlePhotoFile(e, "avatar")} />
+                    </label>
+                    <button onClick={startCamera} style={{ fontSize: 11, color: "white", background: "rgba(0,0,0,0.6)", border: "none", borderRadius: 4, padding: "2px 6px", cursor: "pointer" }}>
+                      📷 Camera
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div style={{ flex: 1, paddingBottom: 8 }}>
+            {editMode ? (
+              <input value={displayName} onChange={e => setDisplayName(e.target.value)}
+                style={{ fontSize: 28, fontWeight: 800, fontFamily: "'Syne',sans-serif", width: "100%", maxWidth: 320, marginBottom: 8 }} />
+            ) : (
+              <h1 style={{ fontFamily: "'Syne',sans-serif", fontSize: 32, fontWeight: 800, letterSpacing: "-0.3px", marginBottom: 4 }}>
+                {profile?.display_name || user.user_metadata?.display_name || "User"}
+              </h1>
+            )}
+            <div style={{ color: C.muted, fontSize: 13, marginBottom: 10 }}>{user.email}</div>
+            {!editMode && bio && <p style={{ fontSize: 14, color: "rgba(238,240,248,0.7)", maxWidth: 480, lineHeight: 1.6, marginBottom: 10 }}>{bio}</p>}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 20, padding: "4px 14px" }}>
+                <Icon name="crown" size={13} color={C.gold} />
+                <span style={{ fontSize: 12, fontWeight: 700, color: C.gold }}>{profile?.plan || "Free"} Plan</span>
+              </div>
+              {!editMode ? (
+                <button className="btn-ghost" style={{ padding: "7px 16px", fontSize: 13 }} onClick={() => setEditMode(true)}>
+                  ✏️ Edit Profile
+                </button>
+              ) : (
+                <div style={{ display: "flex", gap: 8 }}>
+                  <button className="btn-primary" style={{ padding: "7px 18px", fontSize: 13 }} onClick={saveProfile}>Save Changes</button>
+                  <button className="btn-ghost" style={{ padding: "7px 14px", fontSize: 13 }} onClick={() => setEditMode(false)}>Cancel</button>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-        <div>
-          {editMode ? (
-            <div style={{ display: "flex", gap: 10, alignItems: "center", marginBottom: 8 }}>
-              <input value={displayName} onChange={e => setDisplayName(e.target.value)} style={{ width: 200, fontSize: 18, fontWeight: 700 }} />
-              <button className="btn-primary" style={{ padding: "8px 16px" }} onClick={() => setEditMode(false)}>Save</button>
+
+        {/* Edit Form */}
+        {editMode && (
+          <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: "24px", marginBottom: 24 }}>
+            <div style={{ fontFamily: "'Syne',sans-serif", fontSize: 16, fontWeight: 700, marginBottom: 18 }}>Edit Profile Details</div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+              <div>
+                <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Phone Number</label>
+                <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="+91 98765 43210" style={{ width: "100%" }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Date of Birth</label>
+                <input type="date" value={dob} onChange={e => setDob(e.target.value)} style={{ width: "100%" }} />
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Gender</label>
+                <select value={gender} onChange={e => setGender(e.target.value)} style={{ width: "100%" }}>
+                  <option value="">Prefer not to say</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="nonbinary">Non-binary</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Language Preference</label>
+                <button className="btn-ghost" style={{ width: "100%", textAlign: "left", padding: "11px 14px", fontSize: 14 }}
+                  onClick={() => setShowLangPicker(true)}>
+                  {langObj.flag} {langObj.name}
+                </button>
+              </div>
+              <div style={{ gridColumn: "1 / -1" }}>
+                <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Bio</label>
+                <textarea value={bio} onChange={e => setBio(e.target.value)} placeholder="Tell us something about yourself…" rows={3}
+                  style={{ width: "100%", resize: "vertical" }} />
+              </div>
             </div>
-          ) : (
-            <h1 style={{ fontFamily: "'Syne',sans-serif", fontSize: 32, fontWeight: 800, letterSpacing: "-0.3px", marginBottom: 4 }}>
-              {profile?.display_name || user.user_metadata?.display_name || "User"}
-            </h1>
-          )}
-          <div style={{ color: C.muted, fontSize: 13 }}>{user.email}</div>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(251,191,36,0.08)", border: "1px solid rgba(251,191,36,0.25)", borderRadius: 20, padding: "4px 12px" }}>
-              <Icon name="crown" size={13} color={C.gold} />
-              <span style={{ fontSize: 12, fontWeight: 700, color: C.gold }}>{profile?.plan || "Free"} Plan</span>
+          </div>
+        )}
+
+        {/* Tabs */}
+        <div style={{ display: "flex", gap: 0, borderBottom: `1px solid ${C.border}`, marginBottom: 28 }}>
+          {TABS.map(tab => (
+            <button key={tab} onClick={() => setActiveTab(tab)}
+              style={{ padding: "10px 22px", background: "none", border: "none", cursor: "pointer", fontSize: 14, fontWeight: 600,
+                color: activeTab === tab ? C.accent : C.muted, borderBottom: activeTab === tab ? `2px solid ${C.accent}` : "2px solid transparent",
+                textTransform: "capitalize", transition: "color 0.2s" }}>
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {activeTab === "overview" && (
+          <>
+            {/* Stats */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 12, marginBottom: 28 }}>
+              {stats.map(s => (
+                <div key={s.label} className="stat-chip" onClick={() => setCurrentPage(s.page)}>
+                  <Icon name={s.icon} size={22} color={C.accent} style={{ marginBottom: 6 }} />
+                  <div style={{ fontSize: 26, fontWeight: 800, fontFamily: "'Syne',sans-serif" }}>{s.value}</div>
+                  <div style={{ fontSize: 11, color: C.muted }}>{s.label}</div>
+                </div>
+              ))}
             </div>
-            <button className="btn-icon" onClick={() => setEditMode(v => !v)} style={{ width: 32, height: 32, background: C.card, border: `1px solid ${C.border}` }}>
-              <Icon name="settings" size={14} />
+
+            {/* Profile Info Cards */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 24 }}>
+              {phone && (
+                <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: "14px 18px" }}>
+                  <div style={{ fontSize: 11, color: C.muted, marginBottom: 4 }}>PHONE</div>
+                  <div style={{ fontWeight: 600 }}>{phone}</div>
+                </div>
+              )}
+              {dob && (
+                <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: "14px 18px" }}>
+                  <div style={{ fontSize: 11, color: C.muted, marginBottom: 4 }}>DATE OF BIRTH</div>
+                  <div style={{ fontWeight: 600 }}>{new Date(dob).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}</div>
+                </div>
+              )}
+              {gender && (
+                <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: "14px 18px" }}>
+                  <div style={{ fontSize: 11, color: C.muted, marginBottom: 4 }}>GENDER</div>
+                  <div style={{ fontWeight: 600, textTransform: "capitalize" }}>{gender}</div>
+                </div>
+              )}
+              <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: "14px 18px" }}>
+                <div style={{ fontSize: 11, color: C.muted, marginBottom: 4 }}>LANGUAGE</div>
+                <div style={{ fontWeight: 600 }}>{langObj.flag} {langObj.name}</div>
+              </div>
+            </div>
+
+            {/* Subscription card */}
+            <div style={{ background: "linear-gradient(135deg,rgba(200,16,46,0.12),rgba(255,71,87,0.06))", border: `1px solid rgba(200,16,46,0.25)`, borderRadius: 12, padding: "22px 26px", marginBottom: 20 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
+                <div>
+                  <div style={{ fontSize: 10, color: C.muted, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 4 }}>Current Plan</div>
+                  <div style={{ fontFamily: "'Syne',sans-serif", fontSize: 24, fontWeight: 800, color: C.accent }}>{profile?.plan || "Free"} Plan</div>
+                  <div style={{ fontSize: 13, color: C.muted, marginTop: 3 }}>Renews July 5, 2026 · ₹499/month</div>
+                </div>
+                <button className="btn-primary" style={{ fontSize: 13 }} onClick={() => setCurrentPage("subscription")}>Upgrade Plan</button>
+              </div>
+            </div>
+          </>
+        )}
+
+        {activeTab === "activity" && (
+          <div>
+            <div style={{ fontFamily: "'Syne',sans-serif", fontSize: 18, fontWeight: 700, marginBottom: 16 }}>Recent Activity</div>
+            {watchHistory.length === 0 ? (
+              <div style={{ textAlign: "center", padding: "60px 0", color: C.muted }}>
+                <div style={{ fontSize: 36, marginBottom: 10 }}>📺</div>
+                <div>No watch history yet</div>
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {watchHistory.slice(0, 8).map(id => {
+                  const content = ALL_CONTENT.find(c => c.id === id);
+                  if (!content) return null;
+                  const cw = continueWatching.find(x => x.id === id);
+                  return (
+                    <div key={id} style={{ display: "flex", gap: 14, alignItems: "center", background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: "12px 16px" }}>
+                      <img src={content.thumb} alt={content.title} style={{ width: 72, height: 40, objectFit: "cover", borderRadius: 6 }} />
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: 14, fontWeight: 600 }}>{content.title}</div>
+                        <div style={{ fontSize: 12, color: C.muted }}>{content.genre} · {content.year}</div>
+                      </div>
+                      {cw && (
+                        <div style={{ textAlign: "right" }}>
+                          <div style={{ fontSize: 12, color: C.accent, fontWeight: 700 }}>{cw.progress}% done</div>
+                          <div style={{ width: 80, marginTop: 4 }}>
+                            <div className="progress-bar"><div className="progress-fill" style={{ width: `${cw.progress}%` }} /></div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === "settings" && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {[
+              { icon: "globe", label: "Interface Language", value: `${langObj.flag} ${langObj.name}`, action: () => setShowLangPicker(true), btnLabel: "Change" },
+              { icon: "settings", label: "Notification Preferences", value: "Push & Email enabled", action: () => {}, btnLabel: "Configure" },
+              { icon: "grid", label: "Content Maturity", value: "All audiences", action: () => {}, btnLabel: "Change" },
+              { icon: "playCircle", label: "Autoplay", value: "Next episode plays automatically", action: () => {}, btnLabel: "Toggle" },
+            ].map(row => (
+              <div key={row.label} style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 10, padding: "16px 20px", display: "flex", alignItems: "center", gap: 14 }}>
+                <Icon name={row.icon} size={20} color={C.muted} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>{row.label}</div>
+                  <div style={{ fontSize: 12, color: C.muted, marginTop: 2 }}>{row.value}</div>
+                </div>
+                <button onClick={row.action} style={{ padding: "6px 14px", borderRadius: 6, border: `1px solid ${C.border}`, background: "none", color: C.muted, cursor: "pointer", fontSize: 12, whiteSpace: "nowrap" }}>
+                  {row.btnLabel}
+                </button>
+              </div>
+            ))}
+
+            <div style={{ marginTop: 8 }}>
+              <button onClick={dbLogout} style={{ display: "flex", alignItems: "center", gap: 10, background: "none", border: `1px solid rgba(239,68,68,0.3)`, color: "#ef4444", padding: "11px 22px", borderRadius: 8, cursor: "pointer", fontSize: 14, fontFamily: "'DM Sans',sans-serif" }}>
+                <Icon name="logout" size={16} color="#ef4444" /> {t("signout")}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "overview" && (
+          <div style={{ marginTop: 10 }}>
+            <button onClick={dbLogout} style={{ display: "flex", alignItems: "center", gap: 10, background: "none", border: `1px solid rgba(239,68,68,0.3)`, color: "#ef4444", padding: "11px 22px", borderRadius: 8, cursor: "pointer", fontSize: 14, fontFamily: "'DM Sans',sans-serif" }}>
+              <Icon name="logout" size={16} color="#ef4444" /> {t("signout")}
             </button>
           </div>
-        </div>
-      </div>
+        )}
 
-      {/* Stats */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 32 }}>
-        {stats.map(s => (
-          <div key={s.label} className="stat-chip" onClick={() => setCurrentPage(s.page)}>
-            <Icon name={s.icon} size={24} color={C.accent} style={{ marginBottom: 8 }} />
-            <div style={{ fontSize: 28, fontWeight: 800, fontFamily: "'Syne',sans-serif" }}>{s.value}</div>
-            <div style={{ fontSize: 12, color: C.muted }}>{s.label}</div>
-          </div>
-        ))}
+        <div style={{ height: 40 }} />
       </div>
-
-      {/* Language preference */}
-      <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: "20px 24px", marginBottom: 20 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div>
-            <div style={{ fontWeight: 700, marginBottom: 3, display: "flex", alignItems: "center", gap: 8 }}>
-              <Icon name="globe" size={16} color={C.muted} /> {t("language")}
-            </div>
-            <div style={{ fontSize: 13, color: C.muted }}>{langObj.flag} {langObj.name} — {langObj.native}</div>
-          </div>
-          <button className="btn-ghost" style={{ padding: "8px 16px", fontSize: 13 }} onClick={() => setShowLangPicker(true)}>Change</button>
-        </div>
-      </div>
-
-      {/* Subscription card */}
-      <div style={{ background: "linear-gradient(135deg,rgba(200,16,46,0.12),rgba(255,71,87,0.06))", border: `1px solid rgba(200,16,46,0.25)`, borderRadius: 12, padding: "24px 28px", marginBottom: 20 }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 14 }}>
-          <div>
-            <div style={{ fontSize: 10, color: C.muted, fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 4 }}>Current Plan</div>
-            <div style={{ fontFamily: "'Syne',sans-serif", fontSize: 24, fontWeight: 800, color: C.accent }}>{profile?.plan || "Free"} Plan</div>
-            <div style={{ fontSize: 13, color: C.muted, marginTop: 3 }}>Renews July 5, 2026 · ₹499/month</div>
-          </div>
-          <div style={{ display: "flex", gap: 10 }}>
-            <button className="btn-ghost" style={{ fontSize: 13 }}>Manage</button>
-            <button className="btn-primary" style={{ fontSize: 13 }} onClick={() => setCurrentPage("subscription")}>Upgrade</button>
-          </div>
-        </div>
-      </div>
-
-      <button onClick={dbLogout} style={{ display: "flex", alignItems: "center", gap: 10, background: "none", border: `1px solid rgba(239,68,68,0.3)`, color: "#ef4444", padding: "11px 22px", borderRadius: 8, cursor: "pointer", fontSize: 14, fontFamily: "'DM Sans',sans-serif" }}>
-        <Icon name="logout" size={16} color="#ef4444" /> {t("signout")}
-      </button>
 
       {showLangPicker && <LanguagePicker onClose={() => setShowLangPicker(false)} />}
     </div>
@@ -1654,6 +2219,10 @@ function HomePage() {
   const newReleases = [...ALL_CONTENT].sort((a, b) => b.year - a.year).slice(0, 12);
   const action = ALL_CONTENT.filter(c => c.genre === "Action" || c.genre === "Thriller");
   const scifi = ALL_CONTENT.filter(c => c.genre === "Sci-Fi" || c.genre === "Fantasy");
+  const drama = ALL_CONTENT.filter(c => c.genre === "Drama");
+  const hindi = ALL_CONTENT.filter(c => c.language === "Hindi");
+  const south = ALL_CONTENT.filter(c => ["Tamil", "Telugu", "Malayalam", "Kannada"].includes(c.language));
+  const horror = ALL_CONTENT.filter(c => c.genre === "Horror" || c.genre === "Crime");
 
   return (
     <div>
@@ -1664,9 +2233,13 @@ function HomePage() {
       <ContentRow title={t("newReleases")} items={newReleases} />
       <Top10Section items={top10} />
       <ContentRow title="Popular Series" items={MOCK_SERIES} wide />
-      <GenreSection />
       <ContentRow title="Action & Thriller" items={action} />
       <ContentRow title="Sci-Fi & Fantasy" items={scifi} />
+      <ContentRow title="Drama Picks" items={drama} wide />
+      <ContentRow title="Hindi Originals" items={hindi} />
+      <ContentRow title="South Indian Cinema" items={south} wide />
+      <ContentRow title="Crime & Horror" items={horror} />
+      <GenreSection />
     </div>
   );
 }
@@ -1788,7 +2361,7 @@ function Router() {
     detail: <DetailPage />,
     subscription: <SubscriptionPage />,
     settings: <SettingsPage />,
-    about: <SimplePage title="About NOVA OTT"><p>NOVA OTT is India's next-generation streaming platform. We believe entertainment should speak your language — literally. With content in 10 Indian languages and an AI engine that learns your taste, we bring you exactly what you want to watch, when you want it.</p><br /><p>Built with Supabase for rock-solid auth and real-time sync, Razorpay for seamless Indian payments, and a recommendation engine that gets smarter with every watch.</p></SimplePage>,
+    about: <SimplePage title="About NOVA OTT"><p>NOVA OTT is India's next-generation streaming platform. We believe entertainment should speak your language — literally. With content in Indian languages and an AI engine that learns your taste, we bring you exactly what you want to watch, when you want it.</p><br /><p>Built with Supabase for rock-solid auth and real-time sync, Razorpay for seamless Indian payments, and a recommendation engine that gets smarter with every watch.</p></SimplePage>,
     faq: <SimplePage title="FAQ"><div>{[["What languages are supported?", "Nova OTT supports English, Hindi, Tamil, Telugu, Malayalam, Kannada, Marathi, Bengali, Gujarati, and Punjabi — both in UI and content filtering."], ["How does the AI recommendation work?", "Our engine analyzes your watch history, ratings, and favorites to score every title by genre affinity, language preference, and trending signals."], ["How do I subscribe?", "Go to Subscription and choose your plan. Payments are powered by Razorpay — UPI, cards, net banking all accepted."], ["Is there a free trial?", "New Premium subscribers get 30 days free. No credit card required for the Free plan."]].map(([q, a]) => <div key={q} style={{ marginBottom: 22 }}><div style={{ fontWeight: 700, fontSize: 15, marginBottom: 8 }}>{q}</div><div style={{ color: "rgba(238,240,248,0.7)", fontSize: 14 }}>{a}</div></div>)}</div></SimplePage>,
     contact: <SimplePage title="Contact Us"><p style={{ marginBottom: 20 }}>Questions? We're here to help.</p><div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 460 }}><input placeholder="Name" /><input placeholder="Email" type="email" /><textarea placeholder="Your message…" rows={4} style={{ resize: "vertical" }} /><button className="btn-primary" style={{ width: 140 }}>Send</button></div></SimplePage>,
     privacypolicy: <SimplePage title="Privacy Policy"><p>Nova OTT uses Supabase for secure user data storage with Row Level Security — your data is accessible only to you. We collect email, watch history, preferences, and payment records to power personalization and billing. We do not sell your data. Payments are processed by Razorpay and subject to their privacy policy.</p></SimplePage>,
