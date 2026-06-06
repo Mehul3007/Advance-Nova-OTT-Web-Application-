@@ -8,37 +8,84 @@ import { useState, useEffect, useContext, createContext, useRef, useCallback } f
 
 // ─── SUPABASE CONFIG ──────────────────────────────────────────
 // Replace with your actual Supabase project URL and anon key
-const SUPABASE_URL = "https://oaljtmquzkpevsvknzgf.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_3Ctzj6rxDisbiAQwn6vYWw_CJylOEk5";
+const SUPABASE_URL = "https://tvrdoephamcmgwjerdzd.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_msM3OR7HoUyvjAqt1AOFUA_of0S0pKX";
 
 // Lightweight Supabase client (no npm required for browser/React)
 const supabase = {
   _headers: { "Content-Type": "application/json", "apikey": SUPABASE_ANON_KEY, "Authorization": `Bearer ${SUPABASE_ANON_KEY}` },
 
+  // Returns { data, error } — error is a string message or null
   async signUp(email, password, metadata = {}) {
     const r = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
       method: "POST", headers: this._headers,
       body: JSON.stringify({ email, password, data: metadata }),
     });
-    return r.json();
+    const res = await r.json();
+    // Supabase error: { error: "...", error_description: "..." } or { msg: "..." }
+    if (!r.ok) {
+      const raw = res.error_description || res.msg || res.error || "";
+      let msg;
+      const lower = raw.toLowerCase();
+      if (lower.includes("already registered") || lower.includes("user already exists") || lower.includes("email address is already")) {
+        msg = "An account with this email already exists. Please sign in instead.";
+      } else if (lower.includes("password") && lower.includes("weak")) {
+        msg = "Password is too weak. Use at least 8 characters with uppercase, numbers and symbols.";
+      } else if (lower.includes("invalid email")) {
+        msg = "Please enter a valid email address.";
+      } else {
+        msg = raw || "Sign up failed. Please try again.";
+      }
+      return { data: null, error: msg };
+    }
+    // If email confirmation required, res.access_token will be absent
+    // res will have { id, email, confirmation_sent_at, ... }
+    return { data: res, error: null };
   },
+
   async signIn(email, password) {
     const r = await fetch(`${SUPABASE_URL}/auth/v1/token?grant_type=password`, {
       method: "POST", headers: this._headers,
       body: JSON.stringify({ email, password }),
     });
-    return r.json();
+    const res = await r.json();
+    if (!r.ok) {
+      const raw = res.error_description || res.msg || res.error || "";
+      // Map Supabase raw errors to user-friendly messages
+      let msg;
+      if (r.status === 400 || r.status === 401) {
+        const lower = raw.toLowerCase();
+        if (lower.includes("invalid login") || lower.includes("invalid credentials") || lower.includes("user not found") || lower.includes("no user") || raw === "") {
+          msg = "No account found with this email, or the password is incorrect.";
+        } else if (lower.includes("email not confirmed")) {
+          msg = "Please confirm your email first. Check your inbox for the verification link.";
+        } else if (lower.includes("too many")) {
+          msg = "Too many login attempts. Please wait a moment and try again.";
+        } else {
+          msg = raw || "Login failed. Please check your credentials.";
+        }
+      } else {
+        msg = raw || "Login failed. Please try again.";
+      }
+      return { data: null, error: msg };
+    }
+    // Success: { access_token, refresh_token, user, ... }
+    return { data: res, error: null };
   },
+
   async signOut(token) {
     await fetch(`${SUPABASE_URL}/auth/v1/logout`, {
       method: "POST", headers: { ...this._headers, "Authorization": `Bearer ${token}` },
     });
   },
+
   async getUser(token) {
     const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
       headers: { ...this._headers, "Authorization": `Bearer ${token}` },
     });
-    return r.json();
+    const res = await r.json();
+    if (!r.ok) return null;
+    return res;
   },
 
   // Generic REST DB query helper
@@ -303,14 +350,11 @@ function AppProvider({ children }) {
   const [user, setUser] = useState(null);           // Supabase auth user
   const [profile, setProfile] = useState(null);     // DB user_profiles row
   const [accessToken, setAccessToken] = useState(null);
-  const [watchlist, setWatchlist] = useState([3, 7, 101]);
-  const [favorites, setFavorites] = useState([1, 4, 102]);
-  const [watchHistory, setWatchHistory] = useState([1, 2, 101]);
-  const [ratings, setRatings] = useState({ 1: 5, 4: 4 });
-  const [continueWatching, setContinueWatching] = useState([
-    { id: 2, progress: 45, lastWatched: "2h ago" },
-    { id: 101, progress: 72, lastWatched: "1d ago" },
-  ]);
+  const [watchlist, setWatchlist] = useState([]);
+  const [favorites, setFavorites] = useState([]);
+  const [watchHistory, setWatchHistory] = useState([]);
+  const [ratings, setRatings] = useState({});
+  const [continueWatching, setContinueWatching] = useState([]);
   const [currentPage, setCurrentPage] = useState("home");
   const [selectedContent, setSelectedContent] = useState(null);
   const [notification, setNotification] = useState(null);
@@ -330,42 +374,91 @@ function AppProvider({ children }) {
   const dbSignUp = async (email, password, displayName) => {
     setDbLoading(true);
     try {
-      const res = await supabase.signUp(email, password, { display_name: displayName });
-      if (res.error) { showNotification(res.error.message || "Sign up failed", "error"); return false; }
-      // After signup, sign in to get token
-      return await dbLogin(email, password);
-    } catch { showNotification("Network error — running in demo mode", "warn"); return localLogin(email, displayName); }
-    finally { setDbLoading(false); }
+      const { data, error } = await supabase.signUp(email, password, { display_name: displayName });
+      if (error) { showNotification(error, "error"); return false; }
+
+      // Supabase "Confirm email" ON → sends verification link, no access_token yet
+      if (!data.access_token) {
+        // Save pending profile data to localStorage so we can create DB record after they verify
+        localStorage.setItem("nova_pending_profile", JSON.stringify({
+          email, displayName, avatar_seed: Math.random().toString(36).slice(2)
+        }));
+        setAuthModal(null);
+        showNotification("✉️ Verification link sent! Check your email and click the link to activate your account.", "warn");
+        return true;
+      }
+
+      // "Confirm email" OFF → logged in immediately, save profile to DB now
+      const token = data.access_token;
+      setAccessToken(token);
+      localStorage.setItem("nova_token", token);
+      if (data.refresh_token) localStorage.setItem("nova_refresh", data.refresh_token);
+      const userInfo = data.user || await supabase.getUser(token);
+      if (userInfo && userInfo.id) {
+        setUser(userInfo);
+        // Save profile to DB
+        try {
+          const db = await supabase.from("user_profiles", token);
+          await db.upsert({
+            id: userInfo.id,
+            display_name: displayName,
+            avatar_seed: Math.random().toString(36).slice(2),
+            plan: "free",
+            language: "en"
+          });
+        } catch { }
+        await loadUserProfile(userInfo.id, token);
+        setAuthModal(null);
+        showNotification("🎉 Welcome to NOVA! Start watching now.");
+      }
+      return true;
+    } catch {
+      showNotification("Network error — please try again", "error");
+      return false;
+    } finally { setDbLoading(false); }
   };
 
   const dbLogin = async (email, password) => {
     setDbLoading(true);
     try {
-      const res = await supabase.signIn(email, password);
-      if (res.error) { showNotification(res.error.message || "Login failed", "error"); return false; }
-      const token = res.access_token;
+      const { data, error } = await supabase.signIn(email, password);
+      if (error) { showNotification(error, "error"); return { ok: false, error }; }
+      const token = data.access_token;
       setAccessToken(token);
       localStorage.setItem("nova_token", token);
+      if (data.refresh_token) localStorage.setItem("nova_refresh", data.refresh_token);
       const userInfo = await supabase.getUser(token);
+      if (!userInfo) { showNotification("Could not fetch user info", "error"); return { ok: false, error: "Could not fetch user info" }; }
       setUser(userInfo);
+
+      // If user has a pending profile (just verified email), save it to DB now
+      const pendingRaw = localStorage.getItem("nova_pending_profile");
+      if (pendingRaw) {
+        try {
+          const pending = JSON.parse(pendingRaw);
+          const db = await supabase.from("user_profiles", token);
+          await db.upsert({
+            id: userInfo.id,
+            display_name: pending.displayName,
+            avatar_seed: pending.avatar_seed || Math.random().toString(36).slice(2),
+            plan: "free",
+            language: "en"
+          });
+          localStorage.removeItem("nova_pending_profile");
+        } catch { }
+      }
+
       await loadUserProfile(userInfo.id, token);
       setAuthModal(null);
       showNotification(`Welcome back! 🎬`);
-      return true;
+      return { ok: true };
     } catch {
-      showNotification("Cannot reach server — running in demo mode", "warn");
-      return localLogin(email);
+      const msg = "Network error — please try again";
+      showNotification(msg, "error");
+      return { ok: false, error: msg };
     } finally { setDbLoading(false); }
   };
 
-  const localLogin = (email, name) => {
-    const localUser = { id: "demo", email, user_metadata: { display_name: name || email.split("@")[0] } };
-    setUser(localUser);
-    setProfile({ display_name: name || email.split("@")[0], plan: "Premium", avatar_seed: email, language: uiLang });
-    setAuthModal(null);
-    showNotification(`Welcome, ${name || email.split("@")[0]}! (Demo mode)`);
-    return true;
-  };
 
   const loadUserProfile = async (userId, token) => {
     try {
@@ -392,6 +485,13 @@ function AppProvider({ children }) {
           id: r.content_id, progress: r.progress, lastWatched: "recently"
         })));
       }
+      const ratingsDb = await supabase.from("ratings", token);
+      const ratingsData = await ratingsDb.select("content_id,rating", `&user_id=eq.${userId}`);
+      if (Array.isArray(ratingsData)) {
+        const ratingsMap = {};
+        ratingsData.forEach(r => { ratingsMap[r.content_id] = r.rating; });
+        setRatings(ratingsMap);
+      }
     } catch { /* silently handle */ }
   };
 
@@ -400,15 +500,11 @@ function AppProvider({ children }) {
       try { await supabase.signOut(accessToken); } catch { }
     }
     localStorage.removeItem("nova_token");
+    localStorage.removeItem("nova_refresh");
     setUser(null); setProfile(null); setAccessToken(null);
+    setWatchlist([]); setFavorites([]); setWatchHistory([]); setContinueWatching([]);
     setCurrentPage("home");
     showNotification("Logged out successfully");
-  };
-
-  // ── DB SYNC HELPERS ──────────────────────────────────────
-  const syncWatchlist = async (newList) => {
-    if (!user || user.id === "demo" || !accessToken) return;
-    // Simplified: just upsert all. In production, track delta.
   };
 
   // ── LOCAL ACTIONS (optimistic, synced to DB async) ────────
@@ -416,7 +512,7 @@ function AppProvider({ children }) {
     const newList = watchlist.includes(id) ? watchlist.filter(x => x !== id) : [...watchlist, id];
     setWatchlist(newList);
     showNotification(watchlist.includes(id) ? "Removed from Watchlist" : "Added to Watchlist ✓");
-    if (user && accessToken && user.id !== "demo") {
+    if (user && accessToken) {
       try {
         const db = await supabase.from("watchlist", accessToken);
         if (watchlist.includes(id)) await db.delete({ user_id: user.id, content_id: id });
@@ -429,7 +525,7 @@ function AppProvider({ children }) {
     const newList = favorites.includes(id) ? favorites.filter(x => x !== id) : [...favorites, id];
     setFavorites(newList);
     showNotification(favorites.includes(id) ? "Removed from Favorites" : "Added to Favorites ♥");
-    if (user && accessToken && user.id !== "demo") {
+    if (user && accessToken) {
       try {
         const db = await supabase.from("favorites", accessToken);
         if (favorites.includes(id)) await db.delete({ user_id: user.id, content_id: id });
@@ -441,7 +537,7 @@ function AppProvider({ children }) {
   const rateContent = async (id, r) => {
     setRatings(prev => ({ ...prev, [id]: r }));
     showNotification(`Rated ${r} ★`);
-    if (user && accessToken && user.id !== "demo") {
+    if (user && accessToken) {
       try {
         const db = await supabase.from("ratings", accessToken);
         await db.upsert({ user_id: user.id, content_id: id, rating: r });
@@ -456,7 +552,7 @@ function AppProvider({ children }) {
     const exists = continueWatching.find(x => x.id === content.id);
     if (!exists) setContinueWatching(prev => [{ id: content.id, progress: 0, lastWatched: "Just now" }, ...prev].slice(0, 6));
     if (!watchHistory.includes(content.id)) setWatchHistory(prev => [content.id, ...prev]);
-    if (user && accessToken && user.id !== "demo") {
+    if (user && accessToken) {
       try {
         const db = await supabase.from("watch_history", accessToken);
         await db.upsert({ user_id: user.id, content_id: content.id, progress: exists?.progress || 0 });
@@ -466,7 +562,7 @@ function AppProvider({ children }) {
 
   const updateProgress = async (contentId, progress) => {
     setContinueWatching(prev => prev.map(x => x.id === contentId ? { ...x, progress } : x));
-    if (user && accessToken && user.id !== "demo") {
+    if (user && accessToken) {
       try {
         const db = await supabase.from("watch_history", accessToken);
         await db.upsert({ user_id: user.id, content_id: contentId, progress, last_watched: new Date().toISOString() });
@@ -497,7 +593,7 @@ function AppProvider({ children }) {
         // On successful payment, update subscription in DB
         showNotification(`🎉 Subscribed to ${plan} Plan!`);
         setProfile(prev => ({ ...prev, plan }));
-        if (user && accessToken && user.id !== "demo") {
+        if (user && accessToken) {
           try {
             const db = await supabase.from("subscriptions", accessToken);
             await db.upsert({
@@ -513,9 +609,72 @@ function AppProvider({ children }) {
     rzp.open();
   };
 
+  // ── SESSION RESTORE ON PAGE LOAD ────────────────────────────
+  useEffect(() => {
+    const restoreSession = async () => {
+      // Handle OAuth callback — Supabase redirects back with #access_token=...
+      const hash = window.location.hash;
+      if (hash && hash.includes("access_token")) {
+        const params = new URLSearchParams(hash.replace("#", "?"));
+        const token = params.get("access_token");
+        const refresh = params.get("refresh_token");
+        if (token) {
+          window.history.replaceState(null, "", window.location.pathname);
+          localStorage.setItem("nova_token", token);
+          if (refresh) localStorage.setItem("nova_refresh", refresh);
+          setAccessToken(token);
+          try {
+            const userInfo = await supabase.getUser(token);
+            if (userInfo && !userInfo.error) {
+              setUser(userInfo);
+
+              // Check if there's a pending profile to save (from signup before verification)
+              const pendingRaw = localStorage.getItem("nova_pending_profile");
+              if (pendingRaw) {
+                try {
+                  const pending = JSON.parse(pendingRaw);
+                  const db = await supabase.from("user_profiles", token);
+                  await db.upsert({
+                    id: userInfo.id,
+                    display_name: pending.displayName,
+                    avatar_seed: pending.avatar_seed || Math.random().toString(36).slice(2),
+                    plan: "free",
+                    language: "en"
+                  });
+                  localStorage.removeItem("nova_pending_profile");
+                } catch { }
+              }
+
+              await loadUserProfile(userInfo.id, token);
+              showNotification("🎉 Email verified! Welcome to NOVA!");
+            }
+          } catch { }
+          return;
+        }
+      }
+      // Restore from stored token
+      const stored = localStorage.getItem("nova_token");
+      if (!stored) return;
+      try {
+        const userInfo = await supabase.getUser(stored);
+        if (userInfo && userInfo.id) {
+          setAccessToken(stored);
+          setUser(userInfo);
+          await loadUserProfile(userInfo.id, stored);
+        } else {
+          localStorage.removeItem("nova_token");
+        }
+      } catch {
+        localStorage.removeItem("nova_token");
+      }
+    };
+    restoreSession();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const saveLanguagePreference = async (code) => {
     setUiLang(code);
-    if (user && accessToken && user.id !== "demo") {
+    if (user && accessToken) {
       try {
         const db = await supabase.from("user_profiles", accessToken);
         await db.update({ language: code }, { id: user.id });
@@ -741,9 +900,7 @@ function AuthModal() {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [email, setEmail] = useState("");
-  const [emailCode, setEmailCode] = useState("");
-  const [codeSent, setCodeSent] = useState(false);
-  const [codeVerified, setCodeVerified] = useState(false);
+
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [showPw, setShowPw] = useState(false);
@@ -756,12 +913,13 @@ function AuthModal() {
   const canvasRef = useRef(null);
   const [streamObj, setStreamObj] = useState(null);
 
+
   const pwStrength = getPasswordStrength(password);
 
   useEffect(() => {
     setIsLogin(authModal === "login");
     setStep(1); setErr(""); setName(""); setAge(""); setEmail(""); setPassword(""); setPassword2("");
-    setCodeSent(false); setCodeVerified(false); setCapturedPhoto(null);
+    setCapturedPhoto(null);
   }, [authModal]);
 
   if (!authModal) return null;
@@ -773,29 +931,16 @@ function AuthModal() {
     { id: "x",        label: "Continue with X",        bg: "#000",     color: "#fff",    border: "#333",    logo: "https://www.svgrepo.com/show/511330/twitter-154.svg" },
   ];
 
-  const handleSocial = async (provider) => {
+  const handleSocial = (provider) => {
     setSocialLoading(provider);
-    await new Promise(r => setTimeout(r, 1200));
-    setSocialLoading("");
-    // In real implementation: supabase.auth.signInWithOAuth({ provider })
-    // For demo: simulate login
-    const demoUser = { id: "demo", email: `user@${provider}.demo`, user_metadata: { display_name: `${provider.charAt(0).toUpperCase() + provider.slice(1)} User` } };
-    const { dbLogin } = useApp ? { dbLogin: null } : {};
-    // Just use localLogin path via dbSignUp demo mode
-    await dbSignUp(`user@${provider}.demo`, "demo1234", `${provider} User`);
+    // Supabase OAuth redirect — user is sent to provider, then back to this page
+    // Supabase will append #access_token=... to the redirect URL, which AppProvider reads on mount
+    const redirectTo = encodeURIComponent(window.location.origin + window.location.pathname);
+    const oauthProvider = provider === "x" ? "twitter" : provider;
+    window.location.href = `${SUPABASE_URL}/auth/v1/authorize?provider=${oauthProvider}&redirect_to=${redirectTo}`;
   };
 
-  const sendCode = () => {
-    if (!email || !email.includes("@")) { setErr("Enter a valid email first"); return; }
-    setErr("");
-    setCodeSent(true);
-    // In real: send OTP via supabase or email service
-  };
-  const verifyCode = () => {
-    // Demo: any 6-digit code works
-    if (emailCode.length === 6) { setCodeVerified(true); setErr(""); }
-    else setErr("Enter the 6-digit code sent to your email");
-  };
+
 
   // Camera capture
   const startCamera = async () => {
@@ -823,18 +968,17 @@ function AuthModal() {
   const handleSubmit = async () => {
     setErr("");
     if (isLogin) {
-      if (!email || !password) { setErr("Please fill all fields"); return; }
-      const ok = await dbLogin(email, password);
-      if (!ok) setErr("Invalid email or password");
+      if (!email || !password) { setErr("Please fill in all fields"); return; }
+      const result = await dbLogin(email, password);
+      if (!result.ok) setErr(result.error || "Login failed — please try again");
     } else {
       if (!name.trim()) { setErr("Please enter your name"); return; }
       if (!age || isNaN(age) || +age < 13 || +age > 120) { setErr("Please enter a valid age (13+)"); return; }
       if (!email || !email.includes("@")) { setErr("Please enter a valid email"); return; }
-      if (!codeVerified) { setErr("Please verify your email first"); return; }
       if (pwStrength.score < 2) { setErr("Password is too weak"); return; }
       if (password !== password2) { setErr("Passwords do not match"); return; }
       const ok = await dbSignUp(email, password, name);
-      if (!ok) setErr("Sign up failed — try again");
+      if (!ok) setErr("Sign up failed — this email may already be registered");
     }
   };
 
@@ -901,38 +1045,17 @@ function AuthModal() {
             </>
           )}
 
-          {/* Email + Verify */}
+          {/* Email */}
           <div>
             <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>Email Address *</label>
-            <div style={{ display: "flex", gap: 8 }}>
-              <input placeholder="you@email.com" type="email" value={email} onChange={e => { setEmail(e.target.value); setCodeVerified(false); setCodeSent(false); }}
-                style={{ flex: 1 }} />
-              {!isLogin && (
-                <button onClick={sendCode} disabled={codeVerified}
-                  style={{ padding: "0 14px", borderRadius: 6, border: `1px solid ${codeVerified ? "#22c55e" : C.accent}`,
-                    background: codeVerified ? "rgba(34,197,94,0.1)" : "rgba(200,16,46,0.1)",
-                    color: codeVerified ? "#22c55e" : C.accent, cursor: codeVerified ? "default" : "pointer", fontSize: 12, fontWeight: 600, whiteSpace: "nowrap" }}>
-                  {codeVerified ? "✓ Verified" : codeSent ? "Resend" : "Send Code"}
-                </button>
-              )}
-            </div>
+            <input placeholder="you@email.com" type="email" value={email} onChange={e => setEmail(e.target.value)} style={{ width: "100%" }} />
           </div>
 
-          {/* OTP Input */}
-          {!isLogin && codeSent && !codeVerified && (
-            <div>
-              <label style={{ fontSize: 12, color: C.muted, marginBottom: 5, display: "block" }}>
-                Verification Code <span style={{ color: C.muted }}>(check your email — demo: any 6 digits)</span>
-              </label>
-              <div style={{ display: "flex", gap: 8 }}>
-                <input placeholder="6-digit code" maxLength={6} value={emailCode} onChange={e => setEmailCode(e.target.value.replace(/\D/g, ""))}
-                  style={{ flex: 1, letterSpacing: 6, fontSize: 18, textAlign: "center" }} />
-                <button onClick={verifyCode}
-                  style={{ padding: "0 14px", borderRadius: 6, border: `1px solid ${C.accent}`,
-                    background: "rgba(200,16,46,0.1)", color: C.accent, cursor: "pointer", fontSize: 12, fontWeight: 600 }}>
-                  Verify
-                </button>
-              </div>
+          {/* Signup info banner */}
+          {!isLogin && (
+            <div style={{ background: "rgba(200,16,46,0.08)", border: `1px solid rgba(200,16,46,0.2)`, borderRadius: 8, padding: "10px 14px", fontSize: 13, color: C.muted, display: "flex", gap: 8, alignItems: "flex-start" }}>
+              <span style={{ fontSize: 16 }}>📧</span>
+              <span>A verification link will be sent to your email. Click it to activate your account and all your data will be saved automatically.</span>
             </div>
           )}
 
@@ -1042,9 +1165,6 @@ function AuthModal() {
           </button>
         </div>
 
-        <div style={{ marginTop: 16, padding: "10px 14px", background: "rgba(200,16,46,0.06)", borderRadius: 8, border: `1px solid rgba(200,16,46,0.15)`, fontSize: 11, color: C.muted }}>
-          💡 <strong style={{ color: C.text }}>Demo mode:</strong> Social login simulates auth. Email/password uses real Supabase if configured, otherwise runs locally.
-        </div>
       </div>
     </div>
   );
@@ -1829,10 +1949,17 @@ function ProfilePage() {
     setStream(null); setPhotoCapture(false);
   };
 
-  const saveProfile = () => {
+  const saveProfile = async () => {
     if (setProfile) setProfile(prev => ({ ...prev, display_name: displayName, bio, phone, dob, gender, avatarUrl, coverUrl }));
     setEditMode(false);
     showNotification("Profile updated ✓");
+    const token = localStorage.getItem("nova_token");
+    if (user && user.id && token) {
+      try {
+        const db = await supabase.from("user_profiles", token);
+        await db.update({ display_name: displayName, bio, phone, dob, gender }, { id: user.id });
+      } catch { }
+    }
   };
 
   const TABS = ["overview", "activity", "settings"];
