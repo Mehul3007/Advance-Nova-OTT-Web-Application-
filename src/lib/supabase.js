@@ -1,7 +1,7 @@
 // ─── SUPABASE CONFIG ──────────────────────────────────────────
 // Replace with your actual Supabase project URL and anon key
-const SUPABASE_URL = "https://oaljtmquzkpevsvknzgf.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_3Ctzj6rxDisbiAQwn6vYWw_CJylOEk5";
+const SUPABASE_URL = "https://tvrdoephamcmgwjerdzd.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_msM3OR7HoUyvjAqt1AOFUA_of0S0pKX";
 
 const supabase = {
   _headers: {

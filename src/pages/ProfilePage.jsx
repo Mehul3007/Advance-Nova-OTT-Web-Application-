@@ -3,7 +3,7 @@ import { useApp } from "../context/AppContext";
 import { C } from "../constants/theme";
 import { LANGUAGES } from "../constants/languages";
 import { ALL_CONTENT } from "../constants/mockData";
-import { supabase } from "../lib/supabase";
+import supabase from "../lib/supabase";
 import Icon from "../components/ui/Icon";
 import LanguagePicker from "../components/auth/LanguagePicker";
 
