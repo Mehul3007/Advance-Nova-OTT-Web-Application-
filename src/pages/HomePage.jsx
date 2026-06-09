@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useApp } from "../context/AppContext";
 import { C } from "../constants/theme";
-import { MOCK_MOVIES, MOCK_SERIES, ALL_CONTENT } from "../constants/mockData";
 import ContentRow from "../components/ui/ContentRow";
 import ContentCard from "../components/ui/ContentCard";
 import Icon from "../components/ui/Icon";
@@ -9,18 +8,21 @@ import { getRecommendations } from "../lib/recommendations";
 
 // ─── HERO SLIDER ──────────────────────────────────────────────
 function HeroSlider() {
-  const { playContent, setSelectedContent, setCurrentPage, toggleWatchlist, watchlist, t } = useApp();
-  const heroes = MOCK_MOVIES.filter(m => m.trending).slice(0, 5);
+  const { playContent, setSelectedContent, setCurrentPage, toggleWatchlist, watchlist, t, allContent } = useApp();
+  const heroes = allContent.filter(m => m.isTrending).slice(0, 5);
   const [idx, setIdx] = useState(0);
   const [fade, setFade] = useState(true);
 
   useEffect(() => {
+    if (!heroes.length) return;
     const timer = setInterval(() => {
       setFade(false);
       setTimeout(() => { setIdx(i => (i + 1) % heroes.length); setFade(true); }, 300);
     }, 7000);
     return () => clearInterval(timer);
   }, [heroes.length]);
+
+  if (!heroes.length) return null;
 
   const current = heroes[idx];
   const inWL = watchlist.includes(current.id);
@@ -77,9 +79,9 @@ function HeroSlider() {
 
 // ─── CONTINUE WATCHING ROW ────────────────────────────────────
 function ContinueWatchingRow() {
-  const { continueWatching, playContent, t } = useApp();
+  const { continueWatching, playContent, t, getContentById } = useApp();
   const items = continueWatching.map(cw => {
-    const c = ALL_CONTENT.find(x => x.id === cw.id);
+    const c = getContentById(cw.id);
     return c ? { ...c, progress: cw.progress, lastWatched: cw.lastWatched } : null;
   }).filter(Boolean);
   if (!items.length) return null;
@@ -171,16 +173,28 @@ function GenreSection() {
 
 // ─── HOME PAGE ────────────────────────────────────────────────
 export default function HomePage() {
-  const { user, watchHistory, favorites, ratings, t } = useApp();
-  const trending = ALL_CONTENT.filter(c => c.trending);
-  const top10 = MOCK_MOVIES.filter(m => m.top10).sort((a, b) => b.rating - a.rating).slice(0, 10);
-  const newReleases = [...ALL_CONTENT].sort((a, b) => b.year - a.year).slice(0, 12);
-  const action = ALL_CONTENT.filter(c => c.genre === "Action" || c.genre === "Thriller");
-  const scifi = ALL_CONTENT.filter(c => c.genre === "Sci-Fi" || c.genre === "Fantasy");
-  const drama = ALL_CONTENT.filter(c => c.genre === "Drama");
-  const hindi = ALL_CONTENT.filter(c => c.language === "Hindi");
-  const south = ALL_CONTENT.filter(c => ["Tamil", "Telugu", "Malayalam", "Kannada"].includes(c.language));
-  const horror = ALL_CONTENT.filter(c => c.genre === "Horror" || c.genre === "Crime");
+  const { user, watchHistory, favorites, ratings, t, allContent, movies, series, contentLoading } = useApp();
+
+  // ── Derived lists from Supabase data ──
+  const trending = allContent.filter(c => c.isTrending);
+  const top10 = allContent.filter(c => c.isTop10).sort((a, b) => b.rating - a.rating).slice(0, 10);
+  const newReleases = [...allContent].sort((a, b) => b.year - a.year).slice(0, 12);
+  const action = allContent.filter(c => c.genre === "Action" || c.genre === "Thriller");
+  const scifi = allContent.filter(c => c.genre === "Sci-Fi" || c.genre === "Fantasy");
+  const drama = allContent.filter(c => c.genre === "Drama");
+  const hindi = allContent.filter(c => c.language === "Hindi");
+  const south = allContent.filter(c => ["Tamil", "Telugu", "Malayalam", "Kannada"].includes(c.language));
+  const horror = allContent.filter(c => c.genre === "Horror" || c.genre === "Crime");
+
+  // Loading state
+  if (contentLoading) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "60vh", flexDirection: "column", gap: 16 }}>
+        <div style={{ width: 48, height: 48, border: `3px solid ${C.border}`, borderTop: `3px solid ${C.accent}`, borderRadius: "50%", animation: "spin 0.8s linear infinite" }} />
+        <div style={{ color: C.muted, fontSize: 14 }}>Loading content...</div>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -190,7 +204,7 @@ export default function HomePage() {
       <ContentRow title={t("trending")} items={trending} wide />
       <ContentRow title={t("newReleases")} items={newReleases} />
       <Top10Section items={top10} />
-      <ContentRow title="Popular Series" items={MOCK_SERIES} wide />
+      <ContentRow title="Popular Series" items={series} wide />
       <ContentRow title="Action & Thriller" items={action} />
       <ContentRow title="Sci-Fi & Fantasy" items={scifi} />
       <ContentRow title="Drama Picks" items={drama} wide />
