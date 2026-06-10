@@ -1,12 +1,10 @@
-import { ALL_CONTENT } from "../constants/mockData";
-
-export function getRecommendations(watchHistory, favorites, ratings, currentContent = null) {
+export function getRecommendations(watchHistory, favorites, ratings, currentContent = null, allContent = []) {
   if (!watchHistory.length && !favorites.length && !currentContent) {
-    return ALL_CONTENT.filter(c => c.trending).slice(0, 8);
+    return allContent.filter(c => c.isTrending).slice(0, 8);
   }
 
-  const watched = watchHistory.map(id => ALL_CONTENT.find(c => c.id === id)).filter(Boolean);
-  const faved = favorites.map(id => ALL_CONTENT.find(c => c.id === id)).filter(Boolean);
+  const watched = watchHistory.map(id => allContent.find(c => c.id === id)).filter(Boolean);
+  const faved = favorites.map(id => allContent.find(c => c.id === id)).filter(Boolean);
   const allInteracted = [...watched, ...faved];
 
   const genreScores = {};
@@ -24,14 +22,14 @@ export function getRecommendations(watchHistory, favorites, ratings, currentCont
   });
 
   const seenIds = new Set([...watchHistory, ...favorites, currentContent?.id].filter(Boolean));
-  const scored = ALL_CONTENT
+  const scored = allContent
     .filter(c => !seenIds.has(c.id))
     .map(c => {
       let score = 0;
       (c.genres || [c.genre]).forEach(g => { score += (genreScores[g] || 0) * 3; });
       score += (langScores[c.language] || 0) * 1.5;
       score += c.rating * 0.5;
-      if (c.trending) score += 2;
+      if (c.isTrending) score += 2;
       if (currentContent) {
         if (c.genre === currentContent.genre) score += 5;
         if (c.language === currentContent.language) score += 2;
