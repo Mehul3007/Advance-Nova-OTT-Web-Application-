@@ -15,12 +15,15 @@ export default function ProfilePage() {
   const [phone, setPhone] = useState(profile?.phone || "");
   const [dob, setDob] = useState(profile?.dob || "");
   const [gender, setGender] = useState(profile?.gender || "");
-  const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl || null);
+
+  // ✅ FIX: avatar_url se initialize karo (DB field)
+  const [avatarUrl, setAvatarUrl] = useState(profile?.avatar_url || null);
   const [coverUrl, setCoverUrl] = useState(profile?.coverUrl || null);
   const [photoCapture, setPhotoCapture] = useState(false);
   const [stream, setStream] = useState(null);
   const [activeTab, setActiveTab] = useState("overview");
   const [showLangPicker, setShowLangPicker] = useState(false);
+  const [saving, setSaving] = useState(false);
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -71,18 +74,48 @@ export default function ProfilePage() {
     setStream(null); setPhotoCapture(false);
   };
 
+  // ✅ FIX: saveProfile — avatar_url bhi DB mein save karo
   const saveProfile = async () => {
-    if (setProfile) setProfile(prev => ({ ...prev, display_name: displayName, bio, phone, dob, gender, avatarUrl, coverUrl }));
-    setEditMode(false);
-    showNotification("Profile updated ✓");
-    const token = localStorage.getItem("nova_token");
-    if (user && user.id && token) {
-      try {
+    setSaving(true);
+    try {
+      const token = localStorage.getItem("nova_token");
+      if (user && user.id && token) {
         const db = await supabase.from("user_profiles", token);
-        await db.update({ display_name: displayName, bio, phone, dob, gender }, { id: user.id });
-      } catch { }
+        await db.update(
+          {
+            display_name: displayName,
+            bio,
+            phone,
+            dob,
+            gender,
+            // ✅ avatar_url DB mein save karo
+            ...(avatarUrl && avatarUrl !== profile?.avatar_url ? { avatar_url: avatarUrl } : {}),
+          },
+          { id: user.id }
+        );
+      }
+      // ✅ Context mein bhi update karo taaki navbar turant change ho
+      if (setProfile) {
+        setProfile(prev => ({
+          ...prev,
+          display_name: displayName,
+          bio, phone, dob, gender,
+          ...(avatarUrl ? { avatar_url: avatarUrl } : {}),
+        }));
+      }
+      setEditMode(false);
+      showNotification("Profile updated ✓");
+    } catch (e) {
+      showNotification("Failed to save profile", "error");
+    } finally {
+      setSaving(false);
     }
   };
+
+  // ✅ FIX: avatar show karne ke liye avatar_url prefer karo
+  const avatarSrc = avatarUrl
+    || profile?.avatar_url
+    || `https://api.dicebear.com/8.x/personas/svg?seed=${profile?.avatar_seed || user.email}`;
 
   const TABS = ["overview", "activity", "settings"];
 
@@ -106,7 +139,7 @@ export default function ProfilePage() {
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 20 }}>
           <div style={{ position: "relative", marginTop: -50 }}>
             <img
-              src={avatarUrl || `https://api.dicebear.com/8.x/personas/svg?seed=${profile?.avatar_seed || user.email}`}
+              src={avatarSrc}
               alt="avatar"
               style={{ width: 100, height: 100, borderRadius: "50%", border: `3px solid ${C.accent}`, objectFit: "cover", background: C.surface }}
             />
@@ -123,7 +156,9 @@ export default function ProfilePage() {
           <div style={{ display: "flex", gap: 10, paddingBottom: 4 }}>
             {editMode ? (
               <>
-                <button className="btn-primary" style={{ fontSize: 13, padding: "8px 18px" }} onClick={saveProfile}>Save</button>
+                <button className="btn-primary" style={{ fontSize: 13, padding: "8px 18px" }} onClick={saveProfile} disabled={saving}>
+                  {saving ? "Saving…" : "Save"}
+                </button>
                 <button className="btn-ghost" style={{ fontSize: 13, padding: "8px 18px" }} onClick={() => setEditMode(false)}>Cancel</button>
               </>
             ) : (

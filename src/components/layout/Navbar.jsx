@@ -52,7 +52,7 @@ export default function Navbar() {
           {user ? (
             <div style={{ position: "relative" }}>
               <button onClick={() => setShowUserMenu(v => !v)} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 8 }}>
-                <img src={`https://api.dicebear.com/8.x/personas/svg?seed=${profile?.avatar_seed || user.email || "user"}`}
+                <img src={profile?.avatar_url || `https://api.dicebear.com/8.x/personas/svg?seed=${profile?.avatar_seed || user.email || "user"}`}
                   alt="avatar" style={{ width: 34, height: 34, borderRadius: "50%", border: `2px solid ${C.accent}` }} />
                 <span className="hide-mobile" style={{ fontSize: 13, fontWeight: 600 }}>{profile?.display_name || user.user_metadata?.display_name || "User"}</span>
               </button>

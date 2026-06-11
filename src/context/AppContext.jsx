@@ -62,6 +62,7 @@ export function AppProvider({ children }) {
           tags: item.tags || [],
           description: item.description,
           cast: item.cast_members || [], // cast_members → cast
+          cast_images: item.cast_images || [],  // ✅ cast_images added
           director: item.director,
           age: item.age_rating,          // age_rating → age
           isTrending: item.is_trending,

@@ -98,8 +98,16 @@ export default function DetailPage() {
             <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
               {item.cast?.map((actor, i) => (
                 <div key={i} style={{ textAlign: "center", width: 100 }}>
-                  <img src={`https://api.dicebear.com/8.x/personas/svg?seed=${actor}`} alt={actor}
-                    style={{ width: 74, height: 74, borderRadius: "50%", border: `2px solid ${C.border}`, objectFit: "cover" }} />
+                  <img
+                    src={
+                      item.cast_images?.[i]
+                        ? item.cast_images[i]
+                        : `https://api.dicebear.com/8.x/personas/svg?seed=${actor}`
+                    }
+                    alt={actor}
+                    onError={e => { e.target.src = `https://api.dicebear.com/8.x/personas/svg?seed=${actor}`; }}
+                    style={{ width: 74, height: 74, borderRadius: "50%", border: `2px solid ${C.border}`, objectFit: "cover" }}
+                  />
                   <div style={{ fontSize: 12, fontWeight: 600, marginTop: 7 }}>{actor}</div>
                   <div style={{ fontSize: 11, color: C.muted }}>Cast</div>
                 </div>
